@@ -25,11 +25,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'my-jobs' | 'info' | 'profile'
   const [darkMode, setDarkMode] = useState(false);
 
-  // Print Settings State — settings are now per-file
-  const [selectedFiles, setSelectedFiles] = useState([
-    createFile('Resume_Final.pdf', 2, '1.2 MB'),
-    createFile('Project_Draft.pdf', 10, '4.8 MB')
-  ]);
+  // Print Settings State — settings are now per-file (starts empty)
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState('kiosk'); // 'upi' | 'kiosk'
 
   // Generated Print Code
@@ -138,10 +135,7 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    setSelectedFiles([
-      createFile('Resume_Final.pdf', 2, '1.2 MB'),
-      createFile('Project_Draft.pdf', 10, '4.8 MB')
-    ]);
+    setSelectedFiles([]);
     setPaymentMethod('kiosk');
     setActiveTab('home');
     setCurrentPage('splash');
@@ -258,10 +252,7 @@ export default function App() {
             onAddFile={handleAddFileInCheckout}
             onUpdateFileSettings={handleUpdateFileSettings}
             onBack={() => {
-              setSelectedFiles([
-                createFile('Resume_Final.pdf', 2, '1.2 MB'),
-                createFile('Project_Draft.pdf', 10, '4.8 MB')
-              ]);
+              setSelectedFiles([]);
               setCurrentPage('main');
               setActiveTab('home');
             }}
