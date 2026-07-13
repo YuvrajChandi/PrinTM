@@ -1,0 +1,287 @@
+import React, { useRef } from 'react';
+import Header from './Header';
+
+export default function HomeScreen({ 
+  onUploadFile, 
+  onSelectQuickTemplate, 
+  activeJobsCount, 
+  onNavigateTab,
+  userName = "Student"
+}) {
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
+          onUploadFile({
+            name: file.name,
+            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+            pages: Math.floor(Math.random() * 8) + 2 // Mock page count
+          });
+        } else {
+          alert("Only PDF files are supported!");
+        }
+      }
+      // Reset input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const triggerFileSelect = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  return (
+    <div className="flex-1 flex flex-col h-full bg-background overflow-y-auto pb-24">
+      <Header onNavigateTab={onNavigateTab} />
+
+      {/* Main content */}
+      <main className="p-6 flex flex-col gap-8 flex-1">
+        
+        {/* Hero Section with Upload */}
+        <section className="relative w-full rounded-[32px] overflow-hidden bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.25)] p-8 flex flex-col items-start mt-2">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-48 h-48 bg-secondary/40 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div className="absolute top-6 right-6 opacity-10 pointer-events-none">
+            <span className="material-symbols-outlined text-[100px] -rotate-12" style={{ fontVariationSettings: "'FILL' 1" }}>
+              print
+            </span>
+          </div>
+
+          {/* Welcome Text */}
+          <div className="relative z-10 w-full mb-8">
+            <h2 className="text-[32px] leading-[1.1] font-black tracking-tight text-white drop-shadow-sm mb-3">
+              Hello,<br/>{userName} <span className="inline-block animate-wave origin-bottom-right">👋</span>
+            </h2>
+            <p className="text-white/85 text-sm font-medium leading-relaxed max-w-[80%]">
+              Ready to print? Upload your documents and skip the line at the kiosk.
+            </p>
+          </div>
+
+          {/* Hidden File Input */}
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileChange} 
+            accept="application/pdf"
+            multiple
+            className="hidden" 
+          />
+
+          {/* Upload Button */}
+          <button 
+            onClick={triggerFileSelect}
+            className="relative z-10 w-full bg-white text-primary font-bold py-3.5 px-5 flex items-center gap-4 rounded-2xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group"
+          >
+            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+              <span className="material-symbols-outlined text-[26px]">cloud_upload</span>
+            </div>
+            <div className="flex flex-col items-start text-left">
+              <span className="text-[16px] leading-tight font-extrabold">Upload PDF</span>
+              <span className="text-[11px] text-primary/60 font-bold uppercase tracking-wider mt-0.5">Max 50 MB</span>
+            </div>
+            <div className="ml-auto bg-primary/5 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </div>
+          </button>
+        </section>
+
+        {/* Quick Print templates */}
+        <section className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-headline-sm font-bold text-on-surface">Quick Print</h3>
+            <button className="text-label-md font-semibold text-primary py-1 px-2.5 rounded-lg hover:bg-primary/5 transition-colors">
+              View All
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            
+            {/* 1) Admission Form */}
+            <div 
+              onClick={() => onSelectQuickTemplate('Admission_Form.pdf', 3)}
+              className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col gap-3 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group active:scale-98"
+            >
+              <div className="w-full aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+                <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
+                <div className="w-8 h-1 bg-primary/25 rounded"></div>
+                
+                {/* Form header and thumbnail */}
+                <div className="flex gap-1.5 items-start mt-1">
+                  <div className="flex-grow flex flex-col gap-1">
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[85%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[70%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                  <div className="w-6 h-6 rounded border border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-[8px] text-slate-300">person</span>
+                  </div>
+                </div>
+
+                {/* Form lines */}
+                <div className="flex flex-col gap-1 mt-1">
+                  <div className="w-full h-1 bg-slate-100 dark:bg-slate-850 rounded"></div>
+                  <div className="w-full h-1 bg-slate-100 dark:bg-slate-850 rounded"></div>
+                  <div className="w-[90%] h-1 bg-slate-100 dark:bg-slate-850 rounded"></div>
+                </div>
+
+                {/* Bottom line signatures */}
+                <div className="flex justify-between items-center mt-auto">
+                  <div className="w-8 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  <div className="w-6 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                </div>
+              </div>
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-on-surface truncate block group-hover:text-primary transition-colors">Admission Form</span>
+                <p className="text-[10px] text-on-surface-variant font-medium mt-0.5">3 pages · Form</p>
+              </div>
+            </div>
+
+            {/* 2) Index Page */}
+            <div 
+              onClick={() => onSelectQuickTemplate('Index_Page.pdf', 1)}
+              className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col gap-3 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group active:scale-98"
+            >
+              <div className="w-full aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+                <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
+                <div className="w-12 h-1 bg-primary/25 rounded mx-auto mb-1"></div>
+                
+                {/* Index Lines (Chapter dots and numbers) */}
+                <div className="flex flex-col gap-2 mt-1.5">
+                  <div className="flex justify-between items-center">
+                    <div className="w-[60%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-1.5 h-1 bg-slate-300 dark:bg-slate-600 rounded"></div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="w-[75%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-1.5 h-1 bg-slate-300 dark:bg-slate-600 rounded"></div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="w-[50%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-1.5 h-1 bg-slate-300 dark:bg-slate-600 rounded"></div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="w-[80%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-1.5 h-1 bg-slate-300 dark:bg-slate-600 rounded"></div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="w-[65%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-1.5 h-1 bg-slate-300 dark:bg-slate-600 rounded"></div>
+                  </div>
+                </div>
+
+                <div className="w-4 h-1 bg-slate-200 dark:bg-slate-700 rounded mt-auto mx-auto"></div>
+              </div>
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-on-surface truncate block group-hover:text-primary transition-colors">Index Page</span>
+                <p className="text-[10px] text-on-surface-variant font-medium mt-0.5">1 page · Page</p>
+              </div>
+            </div>
+
+            {/* 3) Back Form */}
+            <div 
+              onClick={() => onSelectQuickTemplate('Back_Form.pdf', 2)}
+              className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col gap-3 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group active:scale-98"
+            >
+              <div className="w-full aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+                <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
+                
+                {/* 2 column terms document layout */}
+                <div className="grid grid-cols-2 gap-2 mt-1">
+                  <div className="flex flex-col gap-1">
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[85%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[90%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[80%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                    <div className="w-[70%] h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                </div>
+
+                <div className="w-full h-1 bg-slate-150 dark:bg-slate-700 rounded mt-auto"></div>
+                <div className="flex justify-between items-center mt-1">
+                  <div className="w-6 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  <div className="w-8 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                </div>
+              </div>
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-on-surface truncate block group-hover:text-primary transition-colors">Back Form</span>
+                <p className="text-[10px] text-on-surface-variant font-medium mt-0.5">2 pages · Form</p>
+              </div>
+            </div>
+
+            {/* 4) Summer Internship Form */}
+            <div 
+              onClick={() => onSelectQuickTemplate('Summer_Internship_Form.pdf', 2)}
+              className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col gap-3 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer group active:scale-98"
+            >
+              <div className="w-full aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+                <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
+                <div className="w-10 h-1 bg-primary/25 rounded mx-auto mb-1"></div>
+                
+                {/* Checklist layout */}
+                <div className="flex flex-col gap-1.5 mt-1.5">
+                  <div className="flex gap-1.5 items-center">
+                    <div className="w-2 h-2 rounded-sm border border-slate-300 dark:border-slate-600 shrink-0"></div>
+                    <div className="w-12 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                  <div className="flex gap-1.5 items-center">
+                    <div className="w-2 h-2 rounded-sm border border-slate-300 dark:border-slate-600 shrink-0"></div>
+                    <div className="w-16 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                  <div className="flex gap-1.5 items-center">
+                    <div className="w-2 h-2 rounded-sm border border-slate-300 dark:border-slate-600 shrink-0"></div>
+                    <div className="w-10 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  </div>
+                </div>
+
+                {/* Dashed signature box */}
+                <div className="border border-dashed border-slate-300 dark:border-slate-600 rounded p-1 mt-auto">
+                  <div className="w-10 h-1 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                </div>
+              </div>
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-on-surface truncate block group-hover:text-primary transition-colors">Summer Internship Form</span>
+                <p className="text-[10px] text-on-surface-variant font-medium mt-0.5">2 pages · Form</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Print Status summary */}
+        <section className="flex flex-col gap-3">
+          <h3 className="text-headline-sm font-bold text-on-surface">Status</h3>
+          <div 
+            onClick={() => onNavigateTab('my-jobs')}
+            className="bg-surface-container p-5 border border-outline-variant/30 flex items-center justify-between rounded-2xl hover:border-primary/30 active:scale-[0.99] transition-all cursor-pointer"
+          >
+            <div>
+              <p className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Active Jobs</p>
+              <p className="text-headline-md font-extrabold text-on-surface mt-1">
+                {activeJobsCount} {activeJobsCount === 1 ? 'Document' : 'Documents'}
+              </p>
+            </div>
+            <span className="material-symbols-outlined text-[40px] text-primary/30" style={{ fontVariationSettings: "'FILL' 1" }}>
+              print_connect
+            </span>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  );
+}
