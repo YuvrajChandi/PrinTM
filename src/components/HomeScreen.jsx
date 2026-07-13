@@ -111,7 +111,7 @@ export default function HomeScreen({
               onClick={() => onSelectQuickTemplate('Admission_Form.pdf', 3)}
               className="bg-surface-container-lowest border border-outline-variant/50 rounded-3xl p-3 flex flex-col gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-md transition-all cursor-pointer group active:scale-98"
             >
-              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-2xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
                 <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
                 <div className="w-8 h-1 bg-primary/25 rounded"></div>
                 
@@ -151,7 +151,7 @@ export default function HomeScreen({
               onClick={() => onSelectQuickTemplate('Index_Page.pdf', 1)}
               className="bg-surface-container-lowest border border-outline-variant/50 rounded-3xl p-3 flex flex-col gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-md transition-all cursor-pointer group active:scale-98"
             >
-              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-2xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
                 <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
                 <div className="w-12 h-1 bg-primary/25 rounded mx-auto mb-1"></div>
                 
@@ -192,7 +192,7 @@ export default function HomeScreen({
               onClick={() => onSelectQuickTemplate('Back_Form.pdf', 2)}
               className="bg-surface-container-lowest border border-outline-variant/50 rounded-3xl p-3 flex flex-col gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-md transition-all cursor-pointer group active:scale-98"
             >
-              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-2xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
                 <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
                 
                 {/* 2 column terms document layout */}
@@ -228,7 +228,7 @@ export default function HomeScreen({
               onClick={() => onSelectQuickTemplate('Summer_Internship_Form.pdf', 2)}
               className="bg-surface-container-lowest border border-outline-variant/50 rounded-3xl p-3 flex flex-col gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:shadow-md transition-all cursor-pointer group active:scale-98"
             >
-              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
+              <div className="w-full aspect-[3/4] bg-surface-container-low rounded-2xl border border-outline-variant/30 p-2.5 flex flex-col gap-1.5 relative overflow-hidden shadow-inner group-hover:border-primary/20 transition-all">
                 <div className="absolute top-1.5 right-1.5 bg-rose-500 text-white font-extrabold text-[8px] px-1 rounded-sm shadow-sm leading-tight">PDF</div>
                 <div className="w-10 h-1 bg-primary/25 rounded mx-auto mb-1"></div>
                 
