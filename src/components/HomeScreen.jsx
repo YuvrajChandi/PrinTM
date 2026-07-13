@@ -46,7 +46,7 @@ export default function HomeScreen({
       <main className="p-6 flex flex-col gap-8 flex-1">
         
         {/* Hero Section with Upload */}
-        <section className="relative w-full rounded-[32px] overflow-hidden bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.25)] p-8 flex flex-col items-start mt-2">
+        <section className="relative w-full rounded-[32px] overflow-hidden bg-gradient-to-br from-primary to-[#00428c] dark:from-[#003875] dark:to-[#001738] text-white shadow-[0_8px_30px_rgba(0,89,187,0.25)] p-8 flex flex-col items-start mt-2">
           {/* Decorative background elements */}
           <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-48 h-48 bg-secondary/40 rounded-full blur-2xl pointer-events-none"></div>
@@ -80,16 +80,16 @@ export default function HomeScreen({
           {/* Upload Button */}
           <button 
             onClick={triggerFileSelect}
-            className="relative z-10 w-full bg-white text-primary font-bold py-3.5 px-5 flex items-center gap-4 rounded-2xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group"
+            className="relative z-10 w-full bg-white text-primary dark:text-[#0059bb] font-bold py-3.5 px-5 flex items-center gap-4 rounded-2xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group"
           >
-            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+            <div className="w-12 h-12 bg-primary/10 dark:bg-[#0059bb]/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
               <span className="material-symbols-outlined text-[26px]">cloud_upload</span>
             </div>
             <div className="flex flex-col items-start text-left">
               <span className="text-[16px] leading-tight font-extrabold">Upload PDF</span>
-              <span className="text-[11px] text-primary/60 font-bold uppercase tracking-wider mt-0.5">Max 50 MB</span>
+              <span className="text-[11px] text-primary/60 dark:text-[#0059bb]/60 font-bold uppercase tracking-wider mt-0.5">Max 50 MB</span>
             </div>
-            <div className="ml-auto bg-primary/5 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+            <div className="ml-auto bg-primary/5 dark:bg-[#0059bb]/5 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors">
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </div>
           </button>

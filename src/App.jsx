@@ -193,15 +193,15 @@ export default function App() {
             </div>
 
             {/* Persistent Bottom NavBar */}
-            <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-16 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-full shadow-lg z-50 flex items-center justify-around px-4 overflow-hidden">
+            <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-16 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-full shadow-lg z-50 flex items-center justify-between p-1.5 overflow-hidden">
               
               {/* Home */}
               <button 
                 onClick={() => setActiveTab('home')}
-                className={`flex items-center justify-center transition-all duration-300 ease-in-out ${
+                className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'home' 
-                    ? 'bg-primary text-white px-5 py-2 rounded-full gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'text-slate-400 hover:text-primary'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
                 }`}
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'home' ? "'FILL' 1" : "'FILL' 0" }}>home</span>
@@ -211,10 +211,10 @@ export default function App() {
               {/* My Jobs */}
               <button 
                 onClick={() => setActiveTab('my-jobs')}
-                className={`flex items-center justify-center transition-all duration-300 ease-in-out ${
+                className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'my-jobs' 
-                    ? 'bg-primary text-white px-5 py-2 rounded-full gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'text-slate-400 hover:text-primary'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
                 }`}
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'my-jobs' ? "'FILL' 1" : "'FILL' 0" }}>description</span>
@@ -224,10 +224,10 @@ export default function App() {
               {/* Info */}
               <button 
                 onClick={() => setActiveTab('info')}
-                className={`flex items-center justify-center transition-all duration-300 ease-in-out ${
+                className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'info' 
-                    ? 'bg-primary text-white px-5 py-2 rounded-full gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'text-slate-400 hover:text-primary'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
                 }`}
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'info' ? "'FILL' 1" : "'FILL' 0" }}>info</span>
@@ -237,10 +237,10 @@ export default function App() {
               {/* Profile */}
               <button 
                 onClick={() => setActiveTab('profile')}
-                className={`flex items-center justify-center transition-all duration-300 ease-in-out ${
+                className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'profile' 
-                    ? 'bg-primary text-white px-5 py-2 rounded-full gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'text-slate-400 hover:text-primary'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
                 }`}
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'profile' ? "'FILL' 1" : "'FILL' 0" }}>person</span>

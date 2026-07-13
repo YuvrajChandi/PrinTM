@@ -389,7 +389,7 @@ export default function CheckoutScreen({
         <button 
           onClick={onProceed}
           disabled={selectedFiles.length === 0}
-          className={`w-full h-14 bg-primary text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all ${
+          className={`w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all ${
             selectedFiles.length === 0 ? 'opacity-50 cursor-not-allowed' : 'shadow-lg shadow-primary/20'
           }`}
         >

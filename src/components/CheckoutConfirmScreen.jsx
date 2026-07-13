@@ -175,7 +175,7 @@ export default function CheckoutConfirmScreen({
       <div className="absolute bottom-0 left-0 w-full p-4 bg-surface-container-lowest border-t border-outline-variant/30 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.03)]">
         <button 
           onClick={onConfirm}
-          className="w-full h-14 bg-primary text-white font-bold text-sm shadow-lg shadow-primary/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 rounded-2xl"
+          className="w-full h-14 bg-primary text-on-primary font-bold text-sm shadow-lg shadow-primary/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 rounded-2xl"
         >
           <span>Generate Print Code</span>
           <span className="material-symbols-outlined text-[20px]">qr_code</span>
