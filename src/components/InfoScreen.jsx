@@ -58,7 +58,7 @@ export default function InfoScreen({ onNavigateTab }) {
           {/* Step 1 */}
           <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
             <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-primary rounded-lg flex items-center justify-center font-bold text-base select-none">1</div>
+              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">1</div>
               <span className="material-symbols-outlined text-primary text-2xl opacity-30">upload_file</span>
             </div>
             <div>
@@ -70,7 +70,7 @@ export default function InfoScreen({ onNavigateTab }) {
           {/* Step 2 */}
           <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
             <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-primary rounded-lg flex items-center justify-center font-bold text-base select-none">2</div>
+              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">2</div>
               <span className="material-symbols-outlined text-primary text-2xl opacity-30">settings</span>
             </div>
             <div>
@@ -82,7 +82,7 @@ export default function InfoScreen({ onNavigateTab }) {
           {/* Step 3 */}
           <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
             <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-primary rounded-lg flex items-center justify-center font-bold text-base select-none">3</div>
+              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">3</div>
               <span className="material-symbols-outlined text-primary text-2xl opacity-30">qr_code_2</span>
             </div>
             <div>
@@ -94,7 +94,7 @@ export default function InfoScreen({ onNavigateTab }) {
           {/* Step 4 */}
           <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
             <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-primary rounded-lg flex items-center justify-center font-bold text-base select-none">4</div>
+              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">4</div>
               <span className="material-symbols-outlined text-primary text-2xl opacity-30">print</span>
             </div>
             <div>
