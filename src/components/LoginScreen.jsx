@@ -59,44 +59,44 @@ export default function LoginScreen({ onLoginSuccess }) {
   };
 
   return (
-    <div className="flex-1 bg-surface text-on-surface flex flex-col items-center justify-center p-6 h-full relative">
-      <div className="absolute top-10 left-6">
-        <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-xl shadow-md">
-          <span className="material-symbols-outlined text-[24px] text-white">print</span>
+    <div className="flex-1 bg-surface flex flex-col items-center justify-center p-6 h-full relative overflow-hidden text-on-surface">
+      <div className="-mt-16 card-standard shadow-[0_8px_30px_rgba(0,0,0,0.08)] border-outline-variant/30 rounded-[32px] w-full max-w-[340px] relative z-10 p-8 flex flex-col items-center text-center">
+        
+        {/* Centered Logo */}
+        <div className="w-32 h-32 bg-primary text-white flex items-center justify-center rounded-[28px] shadow-lg mb-8">
+          <span className="material-symbols-outlined" style={{ fontSize: '80px' }}>print</span>
         </div>
-      </div>
 
-      <div className="w-full max-w-sm mt-10">
-        <h1 className="text-3xl font-extrabold text-on-surface mb-2">Welcome</h1>
-        <p className="text-sm text-on-surface-variant mb-10">
+        <h1 className="text-3xl font-extrabold text-on-surface mb-2 tracking-tight">Welcome</h1>
+        <p className="text-sm text-on-surface-variant mb-8 px-4">
           Sign in to track your print jobs and history.
         </p>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-lg border border-red-200">
+          <div className="w-full mb-6 p-3 bg-error-container text-on-error-container text-sm rounded-xl font-medium animate-fade-in-up">
             {error}
           </div>
         )}
 
         {step === 'choice' && (
-          <div className="flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4">
             <button
               onClick={() => setStep('email')}
-              className="w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md shadow-primary/20"
+              className="btn-primary w-full whitespace-nowrap text-[13px] tracking-wide"
             >
               <span className="material-symbols-outlined text-[18px]">school</span>
-              Login with College Email
+              Login with Email
             </button>
             <button
               onClick={handleGuestLogin}
               disabled={isLoading}
-              className="w-full h-14 bg-surface-container-highest text-on-surface font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all border border-outline-variant/30"
+              className="w-full h-[52px] bg-surface-container-highest text-on-surface font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30 hover:bg-surface-container-highest/80 disabled:opacity-50"
             >
               {isLoading ? (
-                <span className="material-symbols-outlined animate-spin">refresh</span>
+                <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
               ) : (
                 <>
-                  <span className="material-symbols-outlined text-[18px]">person</span>
+                  <span className="material-symbols-outlined text-[20px]">person</span>
                   Continue as Guest
                 </>
               )}
@@ -105,29 +105,34 @@ export default function LoginScreen({ onLoginSuccess }) {
         )}
 
         {step === 'email' && (
-          <form onSubmit={handleSendOtp} className="flex flex-col gap-4">
-            <div>
-              <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-2">College Email</label>
+          <form onSubmit={handleSendOtp} className="w-full flex flex-col gap-4">
+            <div className="text-left">
+              <label className="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 pl-1">College Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="student@college.edu"
-                className="w-full h-14 px-4 bg-surface-container-lowest border border-outline-variant/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-on-surface-variant/50 text-sm font-medium"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all mt-2 shadow-md shadow-primary/20"
+              className="btn-primary w-full mt-2"
             >
+              {isLoading ? (
+                <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
+              ) : (
+                <span className="material-symbols-outlined text-[20px]">send</span>
+              )}
               {isLoading ? 'Sending...' : 'Send OTP'}
             </button>
             <button
               type="button"
               onClick={() => { setStep('choice'); setError(''); }}
-              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
+              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors py-2"
             >
               Back
             </button>
@@ -135,31 +140,36 @@ export default function LoginScreen({ onLoginSuccess }) {
         )}
 
         {step === 'otp' && (
-          <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
-            <div>
-              <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wide mb-2">Enter OTP</label>
+          <form onSubmit={handleVerifyOtp} className="w-full flex flex-col gap-4">
+            <div className="text-left">
+              <label className="block text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2 pl-1">Enter OTP</label>
               <input
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="123456"
-                className="w-full h-14 px-4 bg-surface-container-lowest border border-outline-variant/50 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-center tracking-[0.5em] font-bold text-lg"
+                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-center tracking-[0.5em] font-bold text-lg placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-on-surface-variant/50"
                 required
                 maxLength={6}
               />
-              <p className="text-xs text-on-surface-variant mt-2 text-center">OTP sent to {email}</p>
+              <p className="text-[11px] text-on-surface-variant mt-3 text-center">OTP sent to <span className="font-bold">{email}</span></p>
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all mt-2 shadow-md shadow-primary/20"
+              className="btn-primary w-full mt-2"
             >
+              {isLoading ? (
+                <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
+              ) : (
+                <span className="material-symbols-outlined text-[20px]">verified_user</span>
+              )}
               {isLoading ? 'Verifying...' : 'Verify & Login'}
             </button>
             <button
               type="button"
               onClick={() => { setStep('email'); setOtp(''); setError(''); }}
-              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
+              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors py-2"
             >
               Back
             </button>

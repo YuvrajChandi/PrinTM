@@ -29,7 +29,7 @@ export default function ProfileScreen({
         
         {/* Profile Card */}
         <section>
-          <div className="bg-surface-container-lowest p-6 shadow-sm border border-outline-variant/20 flex flex-col items-center text-center rounded-2xl">
+          <div className="card-standard flex flex-col items-center text-center">
             <div className="mb-4">
               <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-inner">
                 <span className="text-3xl font-bold">{userName ? userName.charAt(0).toUpperCase() : 'U'}</span>
@@ -42,7 +42,7 @@ export default function ProfileScreen({
 
         {/* Print Wallet Card */}
         <section>
-          <div className="bg-gradient-to-br from-primary to-[#0059bb] p-6 rounded-2xl text-white shadow-[0px_8px_24px_rgba(0,89,187,0.2)] relative overflow-hidden">
+          <div className="gradient-primary p-6 rounded-2xl text-white shadow-md relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
             <div className="relative z-10 flex items-center justify-between">
               <div>
@@ -62,7 +62,7 @@ export default function ProfileScreen({
         {/* Settings List */}
         <section>
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-widest mb-3.5 px-3">Settings</h3>
-          <div className="bg-surface-container-lowest border border-outline-variant/20 overflow-hidden shadow-sm rounded-2xl">
+          <div className="card-standard !p-0 overflow-hidden">
             
             {/* Help and Support */}
             <button className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">

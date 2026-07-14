@@ -419,18 +419,20 @@ export default function CheckoutScreen({
           </div>
         </div>
 
-        {/* Action Button */}
-        <button
-          onClick={onProceed}
-          disabled={selectedFiles.length === 0 || isProcessing}
-          className={`w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all ${selectedFiles.length === 0 || isProcessing ? 'opacity-50 cursor-not-allowed' : 'shadow-lg shadow-primary/20'
-            }`}
-        >
-          {isProcessing ? 'Generating...' : 'Generate Print QR'}
-          <span className={`material-symbols-outlined text-[18px] ${isProcessing ? 'animate-spin' : ''}`}>
-            {isProcessing ? 'refresh' : 'qr_code'}
-          </span>
-        </button>
+        <div className="mt-2">
+          <button 
+            onClick={onProceed}
+            disabled={isProcessing || selectedFiles.length === 0}
+            className="btn-primary w-full shadow-lg"
+          >
+            {isProcessing ? (
+              <span className="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+            ) : (
+              <span className="material-symbols-outlined text-[20px]">qr_code</span>
+            )}
+            {isProcessing ? 'Generating...' : 'Generate Print QR'}
+          </button>
+        </div>
 
       </div>
     </div>

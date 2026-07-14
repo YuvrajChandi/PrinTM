@@ -46,65 +46,75 @@ export default function InfoScreen({ onNavigateTab }) {
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto py-6 px-6 pb-24 space-y-8">
         
-        {/* Hero Section */}
-        <section className="space-y-1">
-          <h2 className="font-headline text-headline-sm font-bold text-primary">How PrintM Works</h2>
-          <p className="text-on-surface-variant text-sm leading-relaxed">Streamline your academic printing with our simple 4-step process.</p>
-        </section>
+        {/* How PrintM Works - Timeline Card */}
+        <section className="card-standard !p-6">
+          <div className="mb-6">
+            <h2 className="font-headline text-headline-sm font-extrabold text-on-surface">How PrintM Works</h2>
+            <p className="text-on-surface-variant text-xs mt-1">Your documents, printed in 4 simple steps.</p>
+          </div>
 
-        {/* Steps Timeline */}
-        <section className="relative px-2">
-          <div className="absolute left-[26px] top-4 bottom-4 w-0.5 bg-outline-variant/30 z-0"></div>
-          
-          <div className="space-y-6 relative z-10">
-            {/* Step 1 */}
-            <div className="flex gap-4">
-              <div className="w-9 h-9 shrink-0 bg-primary rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,89,187,0.4)] border-4 border-background">
-                <span className="material-symbols-outlined text-white text-[18px]">upload_file</span>
+          <div className="relative pl-1">
+            {/* Connector line — perfectly centered behind the 48px icons (24px half + 4px padding - 1px line half = 27px) */}
+            <div className="absolute left-[27px] top-6 bottom-6 w-[2px] bg-outline-variant/20 z-0"></div>
+            
+            <div className="space-y-7 relative z-10">
+              {/* Step 1 */}
+              <div className="flex gap-4 items-start">
+                <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
+                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                    <span className="material-symbols-outlined text-[22px]">upload_file</span>
+                  </div>
+                </div>
+                <div className="pt-1 flex-1">
+                  <h3 className="font-bold text-[13px] text-on-surface mb-0.5">Upload Document</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Choose a PDF from your device. Max file size is 50 MB.</p>
+                </div>
               </div>
-              <div className="pt-1">
-                <h3 className="font-bold text-sm text-on-surface mb-1">Upload Document</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">Choose a PDF from your device. Max file size is 50 MB.</p>
-              </div>
-            </div>
 
-            {/* Step 2 */}
-            <div className="flex gap-4">
-              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
-                <span className="material-symbols-outlined text-[18px]">tune</span>
+              {/* Step 2 */}
+              <div className="flex gap-4 items-start">
+                <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
+                  <div className="w-[42px] h-[42px] bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+                    <span className="material-symbols-outlined text-[22px]">tune</span>
+                  </div>
+                </div>
+                <div className="pt-1 flex-1">
+                  <h3 className="font-bold text-[13px] text-on-surface mb-0.5">Configure Settings</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Select B&W or color, orientation, and copies. Price updates instantly.</p>
+                </div>
               </div>
-              <div className="pt-1">
-                <h3 className="font-bold text-sm text-on-surface mb-1">Configure Settings</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">Select B&W or color, orientation, and copies. Price updates instantly.</p>
-              </div>
-            </div>
 
-            {/* Step 3 */}
-            <div className="flex gap-4">
-              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
-                <span className="material-symbols-outlined text-[18px]">qr_code_2</span>
+              {/* Step 3 */}
+              <div className="flex gap-4 items-start">
+                <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
+                  <div className="w-[42px] h-[42px] bg-tertiary/10 rounded-xl flex items-center justify-center text-tertiary">
+                    <span className="material-symbols-outlined text-[22px]">qr_code_2</span>
+                  </div>
+                </div>
+                <div className="pt-1 flex-1">
+                  <h3 className="font-bold text-[13px] text-on-surface mb-0.5">Get Print Code</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Confirm your order to generate a unique, secure QR code.</p>
+                </div>
               </div>
-              <div className="pt-1">
-                <h3 className="font-bold text-sm text-on-surface mb-1">Get Print Code</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">Confirm your order to generate a unique, secure QR code.</p>
-              </div>
-            </div>
 
-            {/* Step 4 */}
-            <div className="flex gap-4">
-              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
-                <span className="material-symbols-outlined text-[18px]">print</span>
-              </div>
-              <div className="pt-1">
-                <h3 className="font-bold text-sm text-on-surface mb-1">Print at Kiosk</h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">Scan your QR code at any PrintM kiosk. Files are deleted after printing.</p>
+              {/* Step 4 */}
+              <div className="flex gap-4 items-start">
+                <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
+                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                    <span className="material-symbols-outlined text-[22px]">print</span>
+                  </div>
+                </div>
+                <div className="pt-1 flex-1">
+                  <h3 className="font-bold text-[13px] text-on-surface mb-0.5">Print at Kiosk</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Scan your QR code at any PrintM kiosk. Files are deleted after printing.</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Live Kiosk Status */}
-        <section className="bg-surface-container-lowest p-5 shadow-[0px_4px_16px_rgba(0,89,187,0.06)] border border-outline-variant/30 rounded-2xl">
+        <section className="card-standard">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-sm text-on-surface">Kiosk Locations</h3>
             <span className="text-[10px] font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
@@ -160,9 +170,9 @@ export default function InfoScreen({ onNavigateTab }) {
               return (
                 <div 
                   key={idx} 
-                  className={`overflow-hidden transition-all duration-300 rounded-xl ${
+                  className={`overflow-hidden transition-all duration-300 rounded-2xl ${
                     isExpanded 
-                      ? 'bg-surface-container-lowest shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/30' 
+                      ? 'card-standard !px-0 !py-0' 
                       : 'bg-surface-container-lowest/50 border border-transparent hover:bg-surface-container-lowest'
                   }`}
                 >

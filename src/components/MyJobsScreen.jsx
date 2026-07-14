@@ -62,7 +62,7 @@ export default function MyJobsScreen({
               activeJobs.map((job) => (
                 <div 
                   key={job.id} 
-                  className="bg-surface-container-lowest p-4 shadow-[0px_4px_12px_rgba(15,23,42,0.04)] border border-outline-variant/20 flex flex-col gap-4 rounded-2xl animate-fade-in-up"
+                  className="card-standard flex flex-col gap-4 animate-fade-in-up"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-xl shrink-0">
@@ -118,7 +118,7 @@ export default function MyJobsScreen({
               completedJobs.map((job) => (
                 <div 
                   key={job.id} 
-                  className="bg-surface-container-lowest p-4 shadow-[0px_4px_12px_rgba(15,23,42,0.04)] border border-outline-variant/20 flex flex-col gap-4 opacity-90 rounded-2xl animate-fade-in-up"
+                  className="card-standard flex flex-col gap-4 opacity-75"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 flex items-center justify-center rounded-xl shrink-0">

@@ -55,7 +55,7 @@ export default function HomeScreen({
       <main className="p-6 flex flex-col gap-8 flex-1">
         
         {/* Hero Section with Upload */}
-        <section className="relative w-full rounded-[32px] overflow-hidden bg-gradient-to-br from-primary to-[#00428c] dark:from-[#003875] dark:to-[#001738] text-white shadow-[0_8px_30px_rgba(0,89,187,0.25)] p-8 flex flex-col items-start mt-2">
+        <section className="relative w-full rounded-3xl overflow-hidden gradient-primary text-white shadow-[0_8px_30px_rgba(0,89,187,0.25)] p-8 flex flex-col items-start mt-2">
           {/* Decorative background elements */}
           <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-48 h-48 bg-secondary/40 rounded-full blur-2xl pointer-events-none"></div>
@@ -90,7 +90,7 @@ export default function HomeScreen({
           <button 
             onClick={triggerFileSelect}
             disabled={isUploading}
-            className="relative z-10 w-full bg-white text-primary dark:text-[#0059bb] font-bold py-3.5 px-5 flex items-center gap-4 rounded-2xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group"
+            className="relative z-10 w-full bg-white text-primary dark:text-[#0059bb] font-bold py-3.5 px-5 flex items-center gap-4 rounded-xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group disabled:opacity-50"
           >
             <div className="w-12 h-12 bg-primary/10 dark:bg-[#0059bb]/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
               {isUploading ? (
@@ -282,24 +282,6 @@ export default function HomeScreen({
           </div>
         </section>
 
-        {/* Print Status summary */}
-        <section className="flex flex-col gap-3">
-          <h3 className="text-headline-sm font-bold text-on-surface">Status</h3>
-          <div 
-            onClick={() => onNavigateTab('my-jobs')}
-            className="bg-surface-container p-5 border border-outline-variant/30 flex items-center justify-between rounded-2xl hover:border-primary/30 active:scale-[0.99] transition-all cursor-pointer"
-          >
-            <div>
-              <p className="text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">Active Jobs</p>
-              <p className="text-headline-md font-extrabold text-on-surface mt-1">
-                {activeJobsCount} {activeJobsCount === 1 ? 'Document' : 'Documents'}
-              </p>
-            </div>
-            <span className="material-symbols-outlined text-[40px] text-primary/30" style={{ fontVariationSettings: "'FILL' 1" }}>
-              print_connect
-            </span>
-          </div>
-        </section>
 
       </main>
     </div>

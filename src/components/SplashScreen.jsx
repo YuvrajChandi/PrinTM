@@ -10,53 +10,40 @@ export default function SplashScreen({ onFinish }) {
 
   return (
     <div className="flex-1 bg-surface text-on-surface flex flex-col items-center justify-center p-6 overflow-hidden relative">
-      {/* Background Decoration */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-        <div className="absolute top-[-10%] right-[-5%] w-64 h-80 bg-surface-container-highest shadow-[0px_4px_12px_rgba(15,23,42,0.03)] rotate-12 rounded-xl opacity-40"></div>
-        <div className="absolute bottom-[-15%] left-[-5%] w-72 h-96 bg-surface-container-highest shadow-[0px_4px_12px_rgba(15,23,42,0.03)] -rotate-6 rounded-xl opacity-40"></div>
-      </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-sm w-full -translate-y-10">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 w-full -translate-y-4">
+
         {/* Logo Section */}
-        <div className="mb-8 flex flex-col items-center animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <div className="w-20 h-20 bg-primary flex items-center justify-center mb-4 shadow-lg rounded-[22px] transform hover:rotate-3 active:scale-95 transition-transform duration-500">
-            <span className="material-symbols-outlined text-[40px] text-white" style={{ fontVariationSettings: "'FILL' 1" }}>
+        <div className="mb-6 flex flex-col items-center animate-fade-in-up">
+          <div className="w-32 h-32 bg-primary flex items-center justify-center mb-6 rounded-[32px] shadow-[0px_12px_32px_rgba(0,89,187,0.3)]">
+            <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1", fontSize: '80px' }}>
               print
             </span>
           </div>
-          <h1 className="text-2xl font-black text-primary tracking-tight">
-            PrintM
+          <h1 className="text-3xl font-black text-primary tracking-tight">
+            PrinTM
           </h1>
         </div>
 
-        {/* Greeting Section */}
-        <div className="mb-10 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-          <p className="text-3xl font-extrabold text-on-surface mb-2 tracking-tight">
-            Ready to print?
-          </p>
-          <p className="text-sm text-on-surface-variant max-w-[240px] mx-auto leading-relaxed">
-            Setting up your academic workspace...
-          </p>
-        </div>
-
-        {/* Progress Indicator */}
-        <div className="flex flex-col items-center animate-fade-in-up" style={{ animationDelay: '700ms' }}>
-          <div className="loading-bar-container mb-3">
-            <div className="loading-bar-fill"></div>
+        {/* Minimal Loader */}
+        <div className="mt-8 flex flex-col items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+            <div className="w-2 h-2 bg-primary/70 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+            <div className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
           </div>
-          <p className="text-xs font-bold text-outline uppercase tracking-widest animate-pulse-slow">
-            Syncing Files
+          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+            Starting up...
           </p>
         </div>
       </div>
 
       {/* Bottom Attribution */}
-      <div className="absolute bottom-8 left-0 w-full text-center animate-fade-in-up" style={{ animationDelay: '1000ms' }}>
-        <div className="flex items-center justify-center space-x-2">
-          <span className="material-symbols-outlined text-[18px] text-outline">school</span>
-          <span className="text-xs font-bold text-outline uppercase tracking-wider">Campus Integrated</span>
-        </div>
+      <div className="absolute bottom-8 left-0 w-full text-center animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+        <p className="text-[10px] font-bold text-outline uppercase tracking-widest">
+          Campus Integrated
+        </p>
       </div>
     </div>
   );

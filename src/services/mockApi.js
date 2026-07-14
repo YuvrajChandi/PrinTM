@@ -74,7 +74,7 @@ export const MockApi = {
     const existingJobs = JSON.parse(localStorage.getItem('mockJobs') || '[]');
     const newJob = {
       jobId,
-      status: 'pending',
+      status: 'ready',
       createdAt: new Date().toISOString(),
       orderData
     };
@@ -83,7 +83,7 @@ export const MockApi = {
     return {
       jobId,
       qrData: jobId, // As requested, just generating the string
-      status: 'pending'
+      status: 'ready'
     };
   },
 
@@ -96,7 +96,7 @@ export const MockApi = {
     const updatedJobs = jobs.map(job => {
       if (job.status === 'ready' || job.status === 'pending') {
         const ageInSeconds = (Date.now() - new Date(job.createdAt).getTime()) / 1000;
-        if (ageInSeconds > 15) {
+        if (ageInSeconds > 60) {
           changed = true;
           return { ...job, status: 'completed' };
         }

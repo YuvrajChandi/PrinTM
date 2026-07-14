@@ -143,6 +143,9 @@ export default function App() {
     setCurrentPage('splash');
   };
 
+  const rawName = localStorage.getItem('user_name') || 'Student';
+  const displayUserName = rawName === 'Guest User' ? 'Student' : rawName;
+
   return (
     <MobileFrame>
       <div className="flex-1 flex flex-col h-full bg-background relative overflow-hidden dark:bg-slate-900 text-on-surface dark:text-slate-200">
@@ -173,6 +176,7 @@ export default function App() {
                   onSelectQuickTemplate={handleSelectQuickTemplate}
                   activeJobsCount={jobs.filter(j => j.status === 'ready' || j.status === 'printing').length}
                   onNavigateTab={setActiveTab}
+                  userName={displayUserName}
                 />
               )}
               {activeTab === 'my-jobs' && (
