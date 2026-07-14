@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Header from './Header';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function PrintCodeScreen({ 
   printCode = "PM-7284", 
@@ -29,11 +30,15 @@ export default function PrintCodeScreen({
           {/* QR Code Card */}
           <div className="bg-surface-container-highest p-5 shadow-[0px_4px_24px_rgba(0,89,187,0.06)] border border-outline-variant/30 mb-8 aspect-square w-60 flex items-center justify-center relative overflow-hidden group rounded-2xl">
             <div className="absolute inset-0 opacity-5 pointer-events-none bg-gradient-to-br from-surface-container-highest to-surface-container-lowest"></div>
-            <img 
-              className="w-full h-full object-contain relative z-10 transition-transform duration-500 group-hover:scale-105" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDc5KR6FdSvQKpiu889ndafeYUhSj78hm_2_u1BFoKKxq4N-0VV8nYxoC_YDALjM67zc30eYwzdEmeKiok6v4ekNYOPrSk3l9M9jc5eSBWAxrpIxgAPPw_7CFYV2REPj3gghW_5RVMrkFUmTrl-joWdi6jqZRFoAtXh3lS9dC3ZkNQRKZB3JuXIGufnj51c837Za_wMV5UZg67wbrBxonEY-3U4joeUJuVwtF-FN5Q6ytSg8urZx1bmIKYkrY9cGMpmaeyzwCowca3" 
-              alt="QR Code"
-            />
+            <div className="relative z-10 transition-transform duration-500 group-hover:scale-105 bg-white p-2 rounded-xl">
+              <QRCodeSVG 
+                value={printCode}
+                size={180}
+                bgColor={"#ffffff"}
+                fgColor={"#0059bb"}
+                level={"M"}
+              />
+            </div>
           </div>
 
           {/* Manual Entry Code Card */}

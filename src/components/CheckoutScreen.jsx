@@ -3,6 +3,7 @@ import Header from './Header';
 
 export default function CheckoutScreen({
   selectedFiles,
+  isProcessing,
   onDeleteFile,
   onAddFile,
   onUpdateFileSettings,
@@ -13,6 +14,7 @@ export default function CheckoutScreen({
   const fileInputRef = useRef(null);
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('kiosk'); // 'kiosk' | 'upi'
 
   // Keep activeIndex in bounds when files are deleted
   useEffect(() => {
@@ -111,7 +113,7 @@ export default function CheckoutScreen({
 
       {/* Main Form Content */}
       <main className="flex-1 overflow-y-auto pb-48 flex flex-col gap-5">
-        
+
         {/* ─── Document Carousel ─── */}
         <section className="pt-4">
           <div className="mb-3 px-5">
@@ -119,17 +121,17 @@ export default function CheckoutScreen({
           </div>
 
           {/* Hidden Input */}
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleAddFileChange} 
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleAddFileChange}
             accept="application/pdf"
             multiple
-            className="hidden" 
+            className="hidden"
           />
 
           {/* Scrollable carousel */}
-          <div 
+          <div
             ref={carouselRef}
             onScroll={handleScroll}
             className="flex overflow-x-auto no-scrollbar gap-3 py-3 px-4 snap-x snap-mandatory scroll-smooth"
@@ -142,15 +144,14 @@ export default function CheckoutScreen({
                   key={idx}
                   data-file-index={idx}
                   onClick={() => handleCardTap(idx)}
-                  className={`relative flex-shrink-0 snap-center flex flex-col items-center justify-center rounded-2xl transition-all duration-300 ease-out cursor-pointer ${
-                    isActive
+                  className={`relative flex-shrink-0 snap-center flex flex-col items-center justify-center rounded-2xl transition-all duration-300 ease-out cursor-pointer ${isActive
                       ? 'w-[220px] h-[280px] bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.3)] scale-100 z-10'
                       : 'w-[160px] h-[220px] bg-surface-container-lowest border border-outline-variant/30 text-on-surface opacity-60 scale-95'
-                  }`}
+                    }`}
                 >
                   {/* Delete button */}
                   {isActive && (
-                    <button 
+                    <button
                       onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
                       className="absolute -top-2 -right-2 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
                     >
@@ -159,25 +160,22 @@ export default function CheckoutScreen({
                   )}
 
                   {/* PDF Icon */}
-                  <div className={`rounded-xl mb-3 flex items-center justify-center ${
-                    isActive ? 'bg-white/15 p-5' : 'bg-primary/5 p-4'
-                  }`}>
+                  <div className={`rounded-xl mb-3 flex items-center justify-center ${isActive ? 'bg-white/15 p-5' : 'bg-primary/5 p-4'
+                    }`}>
                     <span className={`material-symbols-outlined ${isActive ? 'text-[52px] text-white' : 'text-[40px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
                       description
                     </span>
                   </div>
 
                   {/* File name */}
-                  <span className={`text-center font-bold truncate w-full px-3 ${
-                    isActive ? 'text-[15px] text-white' : 'text-xs text-on-surface'
-                  }`}>
+                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[15px] text-white' : 'text-xs text-on-surface'
+                    }`}>
                     {file.name}
                   </span>
 
                   {/* Meta info */}
-                  <span className={`text-center mt-1 ${
-                    isActive ? 'text-xs text-white/70' : 'text-[10px] text-on-surface-variant'
-                  }`}>
+                  <span className={`text-center mt-1 ${isActive ? 'text-xs text-white/70' : 'text-[10px] text-on-surface-variant'
+                    }`}>
                     {file.pages} pages · {file.size}
                   </span>
 
@@ -193,7 +191,7 @@ export default function CheckoutScreen({
             })}
 
             {/* Add More Card */}
-            <button 
+            <button
               onClick={triggerAddFileSelect}
               className="flex-shrink-0 snap-center bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-2xl flex flex-col items-center justify-center w-[140px] h-[220px] transition-all active:scale-95 duration-150 opacity-80 hover:opacity-100"
             >
@@ -211,11 +209,10 @@ export default function CheckoutScreen({
                 <button
                   key={idx}
                   onClick={() => { setActiveIndex(idx); scrollToIndex(idx); }}
-                  className={`rounded-full transition-all duration-300 ${
-                    idx === activeIndex 
-                      ? 'w-6 h-2 bg-primary' 
+                  className={`rounded-full transition-all duration-300 ${idx === activeIndex
+                      ? 'w-6 h-2 bg-primary'
                       : 'w-2 h-2 bg-outline-variant/40 hover:bg-outline-variant'
-                  }`}
+                    }`}
                 />
               ))}
             </div>
@@ -231,14 +228,14 @@ export default function CheckoutScreen({
               <h2 className="font-bold text-[15px] text-on-surface">Copies</h2>
             </div>
             <div className="flex items-center bg-secondary rounded-full px-1 py-1 gap-3.5 text-white select-none shadow-[0_2px_8px_rgba(0,107,95,0.2)]">
-              <button 
+              <button
                 className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
                 onClick={() => updateSetting('copies', Math.max(1, copies - 1))}
               >
                 <span className="material-symbols-outlined text-[18px]">remove</span>
               </button>
               <span className="font-extrabold w-4 text-center text-sm">{copies}</span>
-              <button 
+              <button
                 className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
                 onClick={() => updateSetting('copies', copies + 1)}
               >
@@ -249,21 +246,20 @@ export default function CheckoutScreen({
 
           {/* Print Settings */}
           <section className="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-6">
-            
+
             {/* Print Color */}
             <div>
               <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Print color</h3>
               <div className="grid grid-cols-2 gap-3">
-                
+
                 {/* Colored */}
-                <button 
+                <button
                   type="button"
                   onClick={() => updateSetting('color', 'coloured')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                    color === 'coloured' 
-                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm' 
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${color === 'coloured'
+                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
-                  }`}
+                    }`}
                 >
                   <div className="relative w-8 h-8 flex-shrink-0 select-none">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-yellow-400 rounded-full mix-blend-multiply dark:mix-blend-screen opacity-80"></div>
@@ -277,14 +273,13 @@ export default function CheckoutScreen({
                 </button>
 
                 {/* B&W */}
-                <button 
+                <button
                   type="button"
                   onClick={() => updateSetting('color', 'bw')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                    color === 'bw' 
-                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm' 
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${color === 'bw'
+                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
-                  }`}
+                    }`}
                 >
                   <div className="relative w-8 h-8 flex-shrink-0 select-none">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-slate-300 rounded-full mix-blend-multiply dark:mix-blend-screen opacity-80"></div>
@@ -303,16 +298,15 @@ export default function CheckoutScreen({
             <div>
               <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Orientation</h3>
               <div className="grid grid-cols-2 gap-3">
-                
+
                 {/* Portrait */}
-                <button 
+                <button
                   type="button"
                   onClick={() => updateSetting('orientation', 'portrait')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                    orientation === 'portrait' 
-                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm' 
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${orientation === 'portrait'
+                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
-                  }`}
+                    }`}
                 >
                   <div className={`w-8 h-10 rounded flex items-center justify-center ${orientation === 'portrait' ? 'bg-primary/10 text-primary' : 'bg-surface-container-highest text-on-surface-variant'}`}>
                     <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
@@ -326,14 +320,13 @@ export default function CheckoutScreen({
                 </button>
 
                 {/* Landscape */}
-                <button 
+                <button
                   type="button"
                   onClick={() => updateSetting('orientation', 'landscape')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                    orientation === 'landscape' 
-                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm' 
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${orientation === 'landscape'
+                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
-                  }`}
+                    }`}
                 >
                   <div className={`w-10 h-8 rounded flex items-center justify-center ${orientation === 'landscape' ? 'bg-primary/10 text-primary' : 'bg-surface-container-highest text-on-surface-variant'}`}>
                     <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1', transform: 'rotate(90deg)'" }}>
@@ -352,14 +345,55 @@ export default function CheckoutScreen({
             <div className="flex items-center justify-between pt-4 border-t border-outline-variant/30">
               <span className="font-bold text-sm text-on-surface-variant">Double side printing</span>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={duplex}
                   onChange={(e) => updateSetting('duplex', e.target.checked)}
-                  className="sr-only peer" 
+                  className="sr-only peer"
                 />
                 <div className="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant/30 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
+            </div>
+            {/* Payment Method */}
+            <div className="pt-4 border-t border-outline-variant/30">
+              <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Payment Method</h3>
+              <div className="flex flex-col gap-3">
+                {/* Pay at Kiosk */}
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('kiosk')}
+                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${paymentMethod === 'kiosk'
+                      ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
+                      : 'border border-outline-variant/30 hover:bg-surface-container-low'
+                    }`}
+                >
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${paymentMethod === 'kiosk' ? 'bg-secondary/10 text-secondary' : 'bg-surface-container-highest text-on-surface-variant'}`}>
+                    <span className="material-symbols-outlined text-[24px]">point_of_sale</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-sm text-on-surface">Pay at Kiosk</p>
+                    <p className="text-xs text-on-surface-variant">Pay using UPI scanner at the printer</p>
+                  </div>
+                  {paymentMethod === 'kiosk' && (
+                    <span className="material-symbols-outlined text-secondary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                  )}
+                </button>
+
+                {/* Pay using UPI (Disabled) */}
+                <button
+                  type="button"
+                  disabled={true}
+                  className="flex items-center gap-3 p-3 rounded-xl text-left border border-outline-variant/30 opacity-60 cursor-not-allowed bg-surface-container-lowest"
+                >
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container-highest text-on-surface-variant">
+                    <span className="material-symbols-outlined text-[24px]">phone_iphone</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-sm text-on-surface">Pay using UPI</p>
+                    <p className="text-xs text-on-surface-variant text-rose-500 font-medium">Coming soon</p>
+                  </div>
+                </button>
+              </div>
             </div>
 
           </section>
@@ -369,7 +403,7 @@ export default function CheckoutScreen({
 
       {/* Floating Bottom action sheet */}
       <div className="absolute bottom-0 w-full p-4 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-col gap-3 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.03)]">
-        
+
         {/* Order Summary */}
         <div className="bg-surface-container-low p-3.5 border border-outline-variant/30 flex items-center justify-between rounded-xl">
           <div className="flex items-center gap-3">
@@ -386,15 +420,16 @@ export default function CheckoutScreen({
         </div>
 
         {/* Action Button */}
-        <button 
+        <button
           onClick={onProceed}
-          disabled={selectedFiles.length === 0}
-          className={`w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all ${
-            selectedFiles.length === 0 ? 'opacity-50 cursor-not-allowed' : 'shadow-lg shadow-primary/20'
-          }`}
+          disabled={selectedFiles.length === 0 || isProcessing}
+          className={`w-full h-14 bg-primary text-on-primary font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all ${selectedFiles.length === 0 || isProcessing ? 'opacity-50 cursor-not-allowed' : 'shadow-lg shadow-primary/20'
+            }`}
         >
-          Proceed to Checkout
-          <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+          {isProcessing ? 'Generating...' : 'Generate Print QR'}
+          <span className={`material-symbols-outlined text-[18px] ${isProcessing ? 'animate-spin' : ''}`}>
+            {isProcessing ? 'refresh' : 'qr_code'}
+          </span>
         </button>
 
       </div>

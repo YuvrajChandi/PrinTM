@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Header from './Header';
+import { MockApi } from '../services/mockApi';
 
 export default function HomeScreen({ 
   onUploadFile, 
@@ -9,25 +10,33 @@ export default function HomeScreen({
   userName = "Student"
 }) {
   const fileInputRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
-          onUploadFile({
-            name: file.name,
-            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-            pages: Math.floor(Math.random() * 8) + 2 // Mock page count
-          });
-        } else {
-          alert("Only PDF files are supported!");
+      setIsUploading(true);
+      try {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
+            const data = await MockApi.uploadFile(file);
+            onUploadFile({
+              name: data.fileName,
+              size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+              pages: data.pageCount
+            });
+          } else {
+            alert("Only PDF files are supported!");
+          }
         }
-      }
-      // Reset input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
+      } catch (err) {
+        alert("Upload failed: " + err.message);
+      } finally {
+        setIsUploading(false);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       }
     }
   };
@@ -80,18 +89,29 @@ export default function HomeScreen({
           {/* Upload Button */}
           <button 
             onClick={triggerFileSelect}
+            disabled={isUploading}
             className="relative z-10 w-full bg-white text-primary dark:text-[#0059bb] font-bold py-3.5 px-5 flex items-center gap-4 rounded-2xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group"
           >
             <div className="w-12 h-12 bg-primary/10 dark:bg-[#0059bb]/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
-              <span className="material-symbols-outlined text-[26px]">cloud_upload</span>
+              {isUploading ? (
+                <span className="material-symbols-outlined text-[26px] animate-spin">refresh</span>
+              ) : (
+                <span className="material-symbols-outlined text-[26px]">cloud_upload</span>
+              )}
             </div>
             <div className="flex flex-col items-start text-left">
-              <span className="text-[16px] leading-tight font-extrabold">Upload PDF</span>
-              <span className="text-[11px] text-primary/60 dark:text-[#0059bb]/60 font-bold uppercase tracking-wider mt-0.5">Max 50 MB</span>
+              <span className="text-[16px] leading-tight font-extrabold">
+                {isUploading ? 'Uploading...' : 'Upload PDF'}
+              </span>
+              <span className="text-[11px] text-primary/60 dark:text-[#0059bb]/60 font-bold uppercase tracking-wider mt-0.5">
+                {isUploading ? 'Please wait' : 'Max 50 MB'}
+              </span>
             </div>
-            <div className="ml-auto bg-primary/5 dark:bg-[#0059bb]/5 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </div>
+            {!isUploading && (
+              <div className="ml-auto bg-primary/5 dark:bg-[#0059bb]/5 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </div>
+            )}
           </button>
         </section>
 

@@ -52,98 +52,129 @@ export default function InfoScreen({ onNavigateTab }) {
           <p className="text-on-surface-variant text-sm leading-relaxed">Streamline your academic printing with our simple 4-step process.</p>
         </section>
 
-        {/* Steps Bento Grid */}
-        <section className="grid grid-cols-2 gap-3">
+        {/* Steps Timeline */}
+        <section className="relative px-2">
+          <div className="absolute left-[26px] top-4 bottom-4 w-0.5 bg-outline-variant/30 z-0"></div>
           
-          {/* Step 1 */}
-          <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
-            <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">1</div>
-              <span className="material-symbols-outlined text-primary text-2xl opacity-30">upload_file</span>
+          <div className="space-y-6 relative z-10">
+            {/* Step 1 */}
+            <div className="flex gap-4">
+              <div className="w-9 h-9 shrink-0 bg-primary rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(0,89,187,0.4)] border-4 border-background">
+                <span className="material-symbols-outlined text-white text-[18px]">upload_file</span>
+              </div>
+              <div className="pt-1">
+                <h3 className="font-bold text-sm text-on-surface mb-1">Upload Document</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed">Choose a PDF from your device. Max file size is 50 MB.</p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-bold text-md mb-1 text-on-surface">Upload Your Document</h3>
-              <p className="text-xs text-on-surface-variant leading-relaxed">Choose a PDF from your device. Use Quick Print for common university documents like assignments or lecture notes.</p>
+
+            {/* Step 2 */}
+            <div className="flex gap-4">
+              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
+                <span className="material-symbols-outlined text-[18px]">tune</span>
+              </div>
+              <div className="pt-1">
+                <h3 className="font-bold text-sm text-on-surface mb-1">Configure Settings</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed">Select B&W or color, orientation, and copies. Price updates instantly.</p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex gap-4">
+              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
+                <span className="material-symbols-outlined text-[18px]">qr_code_2</span>
+              </div>
+              <div className="pt-1">
+                <h3 className="font-bold text-sm text-on-surface mb-1">Get Print Code</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed">Confirm your order to generate a unique, secure QR code.</p>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="flex gap-4">
+              <div className="w-9 h-9 shrink-0 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-background text-on-surface-variant">
+                <span className="material-symbols-outlined text-[18px]">print</span>
+              </div>
+              <div className="pt-1">
+                <h3 className="font-bold text-sm text-on-surface mb-1">Print at Kiosk</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed">Scan your QR code at any PrintM kiosk. Files are deleted after printing.</p>
+              </div>
             </div>
           </div>
-
-          {/* Step 2 */}
-          <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
-            <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">2</div>
-              <span className="material-symbols-outlined text-primary text-2xl opacity-30">settings</span>
-            </div>
-            <div>
-              <h3 className="font-bold text-md mb-1 text-on-surface">Configure Print Settings</h3>
-              <p className="text-xs text-on-surface-variant leading-relaxed">Select color or B&W, copies, orientation, and duplex printing. See the cost update live.</p>
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
-            <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">3</div>
-              <span className="material-symbols-outlined text-primary text-2xl opacity-30">qr_code_2</span>
-            </div>
-            <div>
-              <h3 className="font-bold text-md mb-1 text-on-surface">Get Your Print Code</h3>
-              <p className="text-xs text-on-surface-variant leading-relaxed">Confirm your order and receive a QR code and a 6-digit numeric code. Pay via UPI or at the kiosk.</p>
-            </div>
-          </div>
-
-          {/* Step 4 */}
-          <div className="col-span-2 bg-surface-container-lowest p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 rounded-2xl">
-            <div className="flex items-start justify-between">
-              <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center font-bold text-base select-none">4</div>
-              <span className="material-symbols-outlined text-primary text-2xl opacity-30">print</span>
-            </div>
-            <div>
-              <h3 className="font-bold text-md mb-1 text-on-surface">Print at the Kiosk</h3>
-              <p className="text-xs text-on-surface-variant leading-relaxed">Scan your QR code at any PrintM kiosk. Collect prints; your file is automatically deleted after printing.</p>
-            </div>
-          </div>
-
         </section>
 
-        {/* Kiosk Locations Graphic */}
-        <section className="relative w-full h-44 overflow-hidden shadow-[0px_4px_16px_rgba(0,89,187,0.06)] rounded-2xl group border border-outline-variant/30">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent z-10"></div>
-          <div className="absolute bottom-4 left-4 z-20 text-white select-none">
-            <h4 class="font-bold text-sm">Find a Kiosk</h4>
-            <p className="text-[10px] opacity-80 mt-0.5">Located at Library, Student Centre, and Academic Block B.</p>
+        {/* Live Kiosk Status */}
+        <section className="bg-surface-container-lowest p-5 shadow-[0px_4px_16px_rgba(0,89,187,0.06)] border border-outline-variant/30 rounded-2xl">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-sm text-on-surface">Kiosk Locations</h3>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+              </span>
+              Live Status
+            </span>
           </div>
-          <img 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgkYCuhFPIgM7xHpiqAEStn1kKR8Bp3Wb9SBxMvmHndoleC8nG73GYMXC_9W9Cewmf1w6gnYfeWHFR4e6nOEwYhLD8PAxy4EJQJyqqOPzLrIJwzblQf9pijea4yFD4qZNg-m0pIWFLnheqkz8HljgaoWvwH7L-kOOtQdsTO_UYoOLG8yETLl1wQ0L51sdOlOJFoN322cp3Kx5TZmz7OTAXBWbrBcnXGHBccw_oXAHWDD2Q6KH88pUm9TgMp90m5tYu7FFBolH6WIOH"
-            alt="Kiosk Locations Map"
-          />
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-on-surface-variant text-[20px]">local_library</span>
+                <div>
+                  <p className="font-bold text-[13px] text-on-surface leading-tight">Central Library</p>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5">Ground Floor Lobby</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded-md uppercase tracking-wider">Online</span>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-on-surface-variant text-[20px]">restaurant</span>
+                <div>
+                  <p className="font-bold text-[13px] text-on-surface leading-tight">Student Centre</p>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5">Near Cafeteria</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded-md uppercase tracking-wider">Online</span>
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-on-surface-variant text-[20px]">apartment</span>
+                <div>
+                  <p className="font-bold text-[13px] text-on-surface leading-tight">Academic Block B</p>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5">2nd Floor Corridor</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-error bg-error/10 px-2 py-1 rounded-md uppercase tracking-wider">Offline</span>
+            </div>
+          </div>
         </section>
 
         {/* FAQ Accordion Section */}
         <section className="flex flex-col gap-4">
           <h2 className="font-headline text-headline-sm font-bold text-primary">Frequently Asked Questions</h2>
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-3">
             {faqData.map((faq, idx) => {
               const isExpanded = expandedFaq === idx;
               return (
                 <div 
                   key={idx} 
-                  className={`overflow-hidden transition-all duration-200 rounded-2xl border ${
+                  className={`overflow-hidden transition-all duration-300 rounded-xl ${
                     isExpanded 
-                      ? 'bg-surface-container-low border-outline-variant/50' 
-                      : 'bg-surface-container-lowest border-outline-variant/30'
+                      ? 'bg-surface-container-lowest shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/30' 
+                      : 'bg-surface-container-lowest/50 border border-transparent hover:bg-surface-container-lowest'
                   }`}
                 >
                   <button 
                     onClick={() => toggleFaq(idx)}
                     className="w-full px-5 py-4 flex items-center justify-between text-left focus:outline-none"
                   >
-                    <span className="font-bold text-sm text-on-surface leading-tight">
+                    <span className="font-bold text-[13px] text-on-surface leading-tight">
                       {faq.q}
                     </span>
                     <span 
-                      className="material-symbols-outlined text-on-surface-variant transition-transform duration-200"
-                      style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      className={`material-symbols-outlined transition-transform duration-300 ${isExpanded ? 'text-primary rotate-180' : 'text-on-surface-variant rotate-0'}`}
                     >
                       expand_more
                     </span>
@@ -152,7 +183,8 @@ export default function InfoScreen({ onNavigateTab }) {
                     className="transition-all duration-300 ease-in-out text-[13px] text-on-surface-variant leading-relaxed"
                     style={{
                       maxHeight: isExpanded ? '200px' : '0px',
-                      padding: isExpanded ? '0px 20px 16px 20px' : '0px 20px 0px 20px'
+                      padding: isExpanded ? '0px 20px 16px 20px' : '0px 20px 0px 20px',
+                      opacity: isExpanded ? 1 : 0
                     }}
                   >
                     {faq.a}
@@ -164,15 +196,18 @@ export default function InfoScreen({ onNavigateTab }) {
         </section>
 
         {/* Support Section */}
-        <section className="bg-primary/5 border border-primary/10 p-5 text-center flex flex-col items-center gap-3 rounded-2xl">
-          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-primary">support_agent</span>
+        <section className="bg-gradient-to-br from-[#001f3f] to-[#003366] p-6 text-white rounded-2xl relative overflow-hidden shadow-lg">
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+          <div className="relative z-10 flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/10">
+              <span className="material-symbols-outlined text-[24px]">support_agent</span>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-sm">Need Assistance?</h4>
+              <p className="text-[11px] text-white/70 mt-0.5 leading-snug">Our student support team at Academic Block B is here to help you.</p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-bold text-primary text-sm">Still need help?</h4>
-            <p className="text-xs text-on-surface-variant mt-1">Contact student support at Academic Block B for assistance.</p>
-          </div>
-          <button className="mt-2 text-primary font-bold text-xs py-2 px-5 border border-primary/20 rounded-xl hover:bg-primary/10 transition-colors">
+          <button className="relative z-10 mt-5 w-full py-3 bg-white text-[#001f3f] font-bold text-xs rounded-xl hover:bg-gray-100 active:scale-[0.98] transition-all shadow-sm">
             Contact Support
           </button>
         </section>

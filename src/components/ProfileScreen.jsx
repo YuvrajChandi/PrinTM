@@ -50,40 +50,41 @@ export default function ProfileScreen({
           </div>
         </section>
 
+        {/* Print Wallet Card */}
+        <section>
+          <div className="bg-gradient-to-br from-primary to-[#0059bb] p-6 rounded-2xl text-white shadow-[0px_8px_24px_rgba(0,89,187,0.2)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <p className="text-white/80 text-xs font-bold uppercase tracking-wider mb-1">Print Wallet</p>
+                <div className="flex items-end gap-1">
+                  <span className="text-3xl font-black tracking-tight">₹ 150.00</span>
+                </div>
+              </div>
+              <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px]">add</span>
+                Add Funds
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Settings List */}
         <section>
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-widest mb-3.5 px-3">Settings</h3>
           <div className="bg-surface-container-lowest border border-outline-variant/20 overflow-hidden shadow-sm rounded-2xl">
             
-            {/* Notification Preferences */}
+            {/* Help and Support */}
             <button className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">
               <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
-                <span className="text-sm text-on-surface font-semibold">Notification Preferences</span>
-              </div>
-              <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-            </button>
-
-            {/* Saved Payment Methods */}
-            <button className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-on-surface-variant">payments</span>
-                <span className="text-sm text-on-surface font-semibold">Saved Payment Methods</span>
-              </div>
-              <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-            </button>
-
-            {/* Print History */}
-            <button className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-on-surface-variant">history</span>
-                <span className="text-sm text-on-surface font-semibold">Print History</span>
+                <span className="material-symbols-outlined text-on-surface-variant">help</span>
+                <span className="text-sm text-on-surface font-semibold">Help & Support</span>
               </div>
               <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
             </button>
 
             {/* Dark Mode Toggle */}
-            <div className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30">
+            <div className="w-full flex items-center justify-between p-4.5">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant">dark_mode</span>
                 <span className="text-sm text-on-surface font-semibold">Dark Mode</span>
@@ -98,18 +99,6 @@ export default function ProfileScreen({
                 <div className="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container-lowest after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-surface-container-lowest after:border-outline-variant/30 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
-
-            {/* Language */}
-            <button className="w-full flex items-center justify-between p-4.5 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-on-surface-variant">language</span>
-                <span className="text-sm text-on-surface font-semibold">Language</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-on-surface-variant">English</span>
-                <span className="material-symbols-outlined text-on-surface-variant">chevron_right</span>
-              </div>
-            </button>
 
           </div>
         </section>

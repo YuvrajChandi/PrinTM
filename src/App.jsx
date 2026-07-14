@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import MobileFrame from './components/MobileFrame';
 import SplashScreen from './components/SplashScreen';
+import LoginScreen from './components/LoginScreen';
 import HomeScreen from './components/HomeScreen';
 import CheckoutScreen from './components/CheckoutScreen';
-import CheckoutConfirmScreen from './components/CheckoutConfirmScreen';
 import PrintCodeScreen from './components/PrintCodeScreen';
+import { MockApi } from './services/mockApi';
 import MyJobsScreen from './components/MyJobsScreen';
 import InfoScreen from './components/InfoScreen';
 import ProfileScreen from './components/ProfileScreen';
@@ -33,35 +34,26 @@ export default function App() {
   const [generatedCode, setGeneratedCode] = useState("PM-7284");
 
   // Database of Print Jobs
-  const [jobs, setJobs] = useState([
-    { 
-      id: 1, 
-      filename: 'Semester_Project_Final.pdf', 
-      pages: 15, 
-      copies: 1, 
-      timestamp: '24 Jun 2026, 10:15 AM', 
-      status: 'ready', 
-      printCode: 'PM-7284' 
-    },
-    { 
-      id: 2, 
-      filename: '3 documents', 
-      pages: 22, 
-      copies: 2, 
-      timestamp: '23 Jun 2026, 4:45 PM', 
-      status: 'printing', 
-      printCode: 'PM-9182' 
-    },
-    { 
-      id: 3, 
-      filename: 'Resume_Draft.pdf', 
-      pages: 1, 
-      copies: 5, 
-      timestamp: '20 Jun 2026, 11:00 AM', 
-      status: 'completed', 
-      printCode: 'PM-0294' 
-    }
-  ]);
+  const [jobs, setJobs] = useState([]);
+
+  // Poll for jobs every 3 seconds to simulate real-time updates
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const data = await MockApi.getJobs();
+        setJobs(data);
+      } catch (err) {
+        console.error("Failed to fetch jobs", err);
+      }
+    };
+    
+    // Initial fetch
+    fetchJobs();
+    
+    // Set up polling
+    const intervalId = setInterval(fetchJobs, 3000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Dark Mode effect
   useEffect(() => {
@@ -102,29 +94,36 @@ export default function App() {
     );
   };
 
-  const handleConfirmCheckout = () => {
-    // Generate code
-    const randCode = "PM-" + Math.floor(1000 + Math.random() * 9000);
-    setGeneratedCode(randCode);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-    // Create job details — sum across all files
-    const totalPages = selectedFiles.reduce((acc, f) => acc + (f.pages || 1), 0);
-    const totalCopies = Math.max(...selectedFiles.map(f => f.copies));
-    const newJob = {
-      id: Date.now(),
-      filename: selectedFiles.length > 1 ? `${selectedFiles.length} documents` : selectedFiles[0].name,
-      pages: totalPages,
-      copies: totalCopies,
-      timestamp: new Date().toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }),
-      status: 'ready',
-      printCode: randCode
-    };
+  const handleConfirmCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      const data = await MockApi.createJob({ files: selectedFiles, paymentMethod });
+      
+      setGeneratedCode(data.qrData);
 
-    // Save job
-    setJobs(prev => [newJob, ...prev]);
+      const totalPages = selectedFiles.reduce((acc, f) => acc + (f.pages || 1), 0);
+      const totalCopies = Math.max(...selectedFiles.map(f => f.copies));
+      const newJob = {
+        id: data.jobId,
+        filename: selectedFiles.length > 1 ? `${selectedFiles.length} documents` : selectedFiles[0].name,
+        pages: totalPages,
+        copies: totalCopies,
+        timestamp: new Date().toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true }),
+        status: data.status,
+        printCode: data.qrData
+      };
 
-    // Show print code screen
-    setCurrentPage('print-code');
+      // We don't need to manually update state because the polling useEffect will pick it up
+      // setJobs(prev => [newJob, ...prev]);
+
+      setCurrentPage('print-code');
+    } catch (err) {
+      alert("Failed to create job: " + err.message);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handlePrintAgain = (completedJob) => {
@@ -147,7 +146,18 @@ export default function App() {
         
         {/* State rendering */}
         {currentPage === 'splash' && (
-          <SplashScreen onFinish={() => setCurrentPage('main')} />
+          <SplashScreen onFinish={() => {
+            const token = localStorage.getItem('kiosk_token');
+            if (token) {
+              setCurrentPage('main');
+            } else {
+              setCurrentPage('login');
+            }
+          }} />
+        )}
+
+        {currentPage === 'login' && (
+          <LoginScreen onLoginSuccess={() => setCurrentPage('main')} />
         )}
 
         {currentPage === 'main' && (
@@ -248,6 +258,7 @@ export default function App() {
         {currentPage === 'checkout' && (
           <CheckoutScreen 
             selectedFiles={selectedFiles}
+            isProcessing={isProcessing}
             onDeleteFile={handleDeleteFile}
             onAddFile={handleAddFileInCheckout}
             onUpdateFileSettings={handleUpdateFileSettings}
@@ -256,21 +267,7 @@ export default function App() {
               setCurrentPage('main');
               setActiveTab('home');
             }}
-            onProceed={() => setCurrentPage('checkout-confirm')}
-            onNavigateTab={(tab) => {
-              setCurrentPage('main');
-              setActiveTab(tab);
-            }}
-          />
-        )}
-
-        {currentPage === 'checkout-confirm' && (
-          <CheckoutConfirmScreen 
-            selectedFiles={selectedFiles}
-            paymentMethod={paymentMethod}
-            onChangePaymentMethod={setPaymentMethod}
-            onBack={() => setCurrentPage('checkout')}
-            onConfirm={handleConfirmCheckout}
+            onProceed={handleConfirmCheckout}
             onNavigateTab={(tab) => {
               setCurrentPage('main');
               setActiveTab(tab);
