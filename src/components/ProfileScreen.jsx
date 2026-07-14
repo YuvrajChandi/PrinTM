@@ -30,23 +30,13 @@ export default function ProfileScreen({
         {/* Profile Card */}
         <section>
           <div className="bg-surface-container-lowest p-6 shadow-sm border border-outline-variant/20 flex flex-col items-center text-center rounded-2xl">
-            <div className="relative mb-4">
-              <div className="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center border-4 border-outline-variant/30 overflow-hidden shadow-inner">
-                <img 
-                  className="w-full h-full object-cover" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZv3oNc1UQah_cE6NZia9JmsO_884M8wH_YqCbC07uMDFaYJku_GJiC_mhFAY2XKiEmE9uFJQLAaJwXNrirU4FRxaoPfofGBPWysbCDpv8CVRvNmdGOiCbokTN2GsXkjcKUlr5L3BRvYxcLIZReBbQsf9zVS-chG7WDh5qWMfG3bv7G5Wrhs3VeO1JeSoPp-NdSEGsn5RLyEMWXTXU2RFaZwit3D3Mk188C7tA5NALVvXa6iDKbcyTfYv2DYynA1Id3PVRnO8wbsHn"
-                  alt="Student Avatar"
-                />
-              </div>
-              <div className="absolute bottom-0 right-0 bg-primary p-1.5 rounded-full border-2 border-white shadow cursor-pointer hover:scale-105 active:scale-95 transition-all">
-                <span className="material-symbols-outlined text-white text-xs block" style={{ fontSize: '14px' }}>edit</span>
+            <div className="mb-4">
+              <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-inner">
+                <span className="text-3xl font-bold">{userName ? userName.charAt(0).toUpperCase() : 'U'}</span>
               </div>
             </div>
             <h2 className="text-headline-sm font-bold text-on-surface">{userName}</h2>
-            <p className="text-body-sm text-on-surface-variant mb-5">{userEmail}</p>
-            <button className="w-full py-2.5 px-6 border border-outline-variant/30 text-primary font-bold text-xs hover:bg-surface-container-highest transition-all active:scale-[0.98] rounded-xl">
-              Edit Profile
-            </button>
+            <p className="text-body-sm text-on-surface-variant mb-2">{userEmail}</p>
           </div>
         </section>
 
