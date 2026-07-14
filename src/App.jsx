@@ -134,6 +134,9 @@ export default function App() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('kiosk_token');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_email');
     setSelectedFiles([]);
     setPaymentMethod('kiosk');
     setActiveTab('home');
@@ -192,6 +195,8 @@ export default function App() {
                   darkMode={darkMode}
                   onToggleDarkMode={setDarkMode}
                   onNavigateTab={setActiveTab}
+                  userName={localStorage.getItem('user_name') || "Durgesh Kumar"}
+                  userEmail={localStorage.getItem('user_email') || "Durgesh@sharda.ac.in"}
                 />
               )}
             </div>

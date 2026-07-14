@@ -15,6 +15,8 @@ export default function LoginScreen({ onLoginSuccess }) {
       const data = await MockApi.guestLogin();
       // Store token (in a real app, use Context or secure cookie)
       localStorage.setItem('kiosk_token', data.token);
+      localStorage.setItem('user_name', 'Guest User');
+      localStorage.setItem('user_email', 'guest@printm.kiosk');
       onLoginSuccess();
     } catch (err) {
       setError(err.message || 'Failed to login as guest');
@@ -46,6 +48,8 @@ export default function LoginScreen({ onLoginSuccess }) {
     try {
       const data = await MockApi.verifyOtp(email, otp);
       localStorage.setItem('kiosk_token', data.token);
+      localStorage.setItem('user_name', email.split('@')[0]);
+      localStorage.setItem('user_email', email);
       onLoginSuccess();
     } catch (err) {
       setError(err.message || 'Invalid OTP');
