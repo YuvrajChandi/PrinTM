@@ -60,10 +60,10 @@ export default function LoginScreen({ onLoginSuccess }) {
 
   return (
     <div className="flex-1 bg-surface flex flex-col items-center justify-center p-6 h-full relative overflow-hidden text-on-surface">
-      <div className="-mt-16 card-standard shadow-[0_8px_30px_rgba(0,0,0,0.08)] border-outline-variant/30 rounded-[32px] w-full max-w-[340px] relative z-10 p-8 flex flex-col items-center text-center">
+      <div className="-mt-16 card-standard shadow-[0_8px_30px_rgba(0,0,0,0.08)] border-outline-variant/30 rounded-3xl w-full max-w-[340px] relative z-10 p-8 flex flex-col items-center text-center">
         
         {/* Centered Logo */}
-        <div className="w-32 h-32 bg-primary text-white flex items-center justify-center rounded-[28px] shadow-lg mb-8">
+        <div className="w-32 h-32 bg-primary text-white flex items-center justify-center rounded-2xl shadow-lg mb-8">
           <span className="material-symbols-outlined" style={{ fontSize: '80px' }}>print</span>
         </div>
 
@@ -73,7 +73,7 @@ export default function LoginScreen({ onLoginSuccess }) {
         </p>
 
         {error && (
-          <div className="w-full mb-6 p-3 bg-error-container text-on-error-container text-sm rounded-xl font-medium animate-fade-in-up">
+          <div className="w-full mb-6 p-3 bg-error-container text-on-error-container text-sm rounded-md font-medium animate-fade-in-up">
             {error}
           </div>
         )}
@@ -90,7 +90,7 @@ export default function LoginScreen({ onLoginSuccess }) {
             <button
               onClick={handleGuestLogin}
               disabled={isLoading}
-              className="w-full h-[52px] bg-surface-container-highest text-on-surface font-bold text-sm rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30 hover:bg-surface-container-highest/80 disabled:opacity-50"
+              className="w-full h-12 bg-surface-container-highest text-on-surface font-bold text-sm rounded-md flex items-center justify-center gap-2 active:scale-[0.98] transition-all duration-200 border border-outline-variant/30 hover:bg-surface-container-highest/80 disabled:opacity-50"
             >
               {isLoading ? (
                 <span className="material-symbols-outlined animate-spin text-[20px]">refresh</span>
@@ -113,7 +113,7 @@ export default function LoginScreen({ onLoginSuccess }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="student@college.edu"
-                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-on-surface-variant/50 text-sm font-medium"
+                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-200 placeholder:text-on-surface-variant/50 text-sm font-medium"
                 required
               />
             </div>
@@ -132,7 +132,7 @@ export default function LoginScreen({ onLoginSuccess }) {
             <button
               type="button"
               onClick={() => { setStep('choice'); setError(''); }}
-              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors py-2"
+              className="mt-2 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors duration-200 py-2"
             >
               Back
             </button>
@@ -148,7 +148,7 @@ export default function LoginScreen({ onLoginSuccess }) {
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 placeholder="123456"
-                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-center tracking-[0.5em] font-bold text-lg placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-on-surface-variant/50"
+                className="w-full h-[52px] px-4 bg-surface-container-low border border-outline-variant/40 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-200 text-center tracking-[0.5em] font-bold text-lg placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-on-surface-variant/50"
                 required
                 maxLength={6}
               />
@@ -169,7 +169,7 @@ export default function LoginScreen({ onLoginSuccess }) {
             <button
               type="button"
               onClick={() => { setStep('email'); setOtp(''); setError(''); }}
-              className="mt-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors py-2"
+              className="mt-2 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors duration-200 py-2"
             >
               Back
             </button>

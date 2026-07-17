@@ -16,7 +16,7 @@ export default function SplashScreen({ onFinish }) {
 
         {/* Logo Section */}
         <div className="mb-6 flex flex-col items-center animate-fade-in-up">
-          <div className="w-32 h-32 bg-primary flex items-center justify-center mb-6 rounded-[32px] shadow-[0px_12px_32px_rgba(0,89,187,0.3)]">
+          <div className="w-32 h-32 bg-primary flex items-center justify-center mb-6 rounded-3xl shadow-[0px_12px_32px_rgba(0,89,187,0.3)]">
             <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1", fontSize: '80px' }}>
               print
             </span>

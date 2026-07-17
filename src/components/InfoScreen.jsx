@@ -49,7 +49,7 @@ export default function InfoScreen({ onNavigateTab }) {
         {/* How PrintM Works - Timeline Card */}
         <section className="card-standard !p-6">
           <div className="mb-6">
-            <h2 className="font-headline text-headline-sm font-extrabold text-on-surface">How PrintM Works</h2>
+            <h2 className="text-lg font-extrabold text-on-surface">How PrintM Works</h2>
             <p className="text-on-surface-variant text-xs mt-1">Your documents, printed in 4 simple steps.</p>
           </div>
 
@@ -61,7 +61,7 @@ export default function InfoScreen({ onNavigateTab }) {
               {/* Step 1 */}
               <div className="flex gap-4 items-start">
                 <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
-                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-md flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-[22px]">upload_file</span>
                   </div>
                 </div>
@@ -74,7 +74,7 @@ export default function InfoScreen({ onNavigateTab }) {
               {/* Step 2 */}
               <div className="flex gap-4 items-start">
                 <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
-                  <div className="w-[42px] h-[42px] bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+                  <div className="w-[42px] h-[42px] bg-secondary/10 rounded-md flex items-center justify-center text-secondary">
                     <span className="material-symbols-outlined text-[22px]">tune</span>
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export default function InfoScreen({ onNavigateTab }) {
               {/* Step 3 */}
               <div className="flex gap-4 items-start">
                 <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
-                  <div className="w-[42px] h-[42px] bg-tertiary/10 rounded-xl flex items-center justify-center text-tertiary">
+                  <div className="w-[42px] h-[42px] bg-tertiary/10 rounded-md flex items-center justify-center text-tertiary">
                     <span className="material-symbols-outlined text-[22px]">qr_code_2</span>
                   </div>
                 </div>
@@ -100,7 +100,7 @@ export default function InfoScreen({ onNavigateTab }) {
               {/* Step 4 */}
               <div className="flex gap-4 items-start">
                 <div className="shrink-0 bg-white dark:bg-surface-container-lowest rounded-2xl p-[3px] z-10 relative">
-                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                  <div className="w-[42px] h-[42px] bg-primary/10 rounded-md flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-[22px]">print</span>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export default function InfoScreen({ onNavigateTab }) {
             </span>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+            <div className="flex items-center justify-between p-3 rounded-md bg-surface-container-highest/50">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant text-[20px]">local_library</span>
                 <div>
@@ -134,10 +134,10 @@ export default function InfoScreen({ onNavigateTab }) {
                   <p className="text-[10px] text-on-surface-variant mt-0.5">Ground Floor Lobby</p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded-md uppercase tracking-wider">Online</span>
+              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded uppercase tracking-wider">Online</span>
             </div>
             
-            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+            <div className="flex items-center justify-between p-3 rounded-md bg-surface-container-highest/50">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant text-[20px]">restaurant</span>
                 <div>
@@ -145,10 +145,10 @@ export default function InfoScreen({ onNavigateTab }) {
                   <p className="text-[10px] text-on-surface-variant mt-0.5">Near Cafeteria</p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded-md uppercase tracking-wider">Online</span>
+              <span className="text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-1 rounded uppercase tracking-wider">Online</span>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-surface-container-highest/50">
+            <div className="flex items-center justify-between p-3 rounded-md bg-surface-container-highest/50">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant text-[20px]">apartment</span>
                 <div>
@@ -156,14 +156,14 @@ export default function InfoScreen({ onNavigateTab }) {
                   <p className="text-[10px] text-on-surface-variant mt-0.5">2nd Floor Corridor</p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-error bg-error/10 px-2 py-1 rounded-md uppercase tracking-wider">Offline</span>
+              <span className="text-[10px] font-bold text-error bg-error/10 px-2 py-1 rounded uppercase tracking-wider">Offline</span>
             </div>
           </div>
         </section>
 
         {/* FAQ Accordion Section */}
         <section className="flex flex-col gap-4">
-          <h2 className="font-headline text-headline-sm font-bold text-primary">Frequently Asked Questions</h2>
+          <h2 className="text-lg font-bold text-on-surface">Frequently Asked Questions</h2>
           <div className="flex flex-col gap-3">
             {faqData.map((faq, idx) => {
               const isExpanded = expandedFaq === idx;
@@ -217,7 +217,7 @@ export default function InfoScreen({ onNavigateTab }) {
               <p className="text-[11px] text-white/70 mt-0.5 leading-snug">Our student support team at Academic Block B is here to help you.</p>
             </div>
           </div>
-          <button className="relative z-10 mt-5 w-full py-3 bg-white text-[#001f3f] font-bold text-xs rounded-xl hover:bg-gray-100 active:scale-[0.98] transition-all shadow-sm">
+          <button className="relative z-10 mt-5 w-full py-3 bg-white text-[#001f3f] font-bold text-xs rounded-md hover:bg-gray-100 active:scale-[0.98] transition-all duration-200 shadow-sm">
             Contact Support
           </button>
         </section>

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Header from './Header';
+import { MockApi } from '../services/mockApi';
 
 export default function CheckoutScreen({
   selectedFiles,
@@ -15,13 +16,8 @@ export default function CheckoutScreen({
   const carouselRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('kiosk'); // 'kiosk' | 'upi'
-
-  // Keep activeIndex in bounds when files are deleted
-  useEffect(() => {
-    if (activeIndex >= selectedFiles.length && selectedFiles.length > 0) {
-      setActiveIndex(selectedFiles.length - 1);
-    }
-  }, [selectedFiles.length, activeIndex]);
+  const [isUploading, setIsUploading] = useState(false);
+  const prevLengthRef = useRef(selectedFiles.length);
 
   // Current file & its settings
   const currentFile = selectedFiles[activeIndex] || selectedFiles[0];
@@ -43,22 +39,31 @@ export default function CheckoutScreen({
   }, [activeIndex, onUpdateFileSettings]);
 
   // File add handler
-  const handleAddFileChange = (e) => {
+  const handleAddFileChange = async (e) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
-          onAddFile({
-            name: file.name,
-            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-            pages: Math.floor(Math.random() * 8) + 2
-          });
-        } else {
-          alert("Only PDF files are supported!");
+      setIsUploading(true);
+      try {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
+            const data = await MockApi.uploadFile(file);
+            onAddFile({
+              name: data.fileName,
+              size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+              pages: data.pageCount,
+              previewUrl: data.previewUrl
+            });
+          } else {
+            alert("Only PDF files are supported!");
+          }
         }
+      } catch (err) {
+        alert("Upload failed: " + err.message);
+      } finally {
+        setIsUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
       }
-      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -107,17 +112,32 @@ export default function CheckoutScreen({
     }
   };
 
+  // Auto-focus on new files, or handle deletions
+  useEffect(() => {
+    if (selectedFiles.length > prevLengthRef.current) {
+      // New files added! Focus on the first newly added file.
+      const newIndex = prevLengthRef.current;
+      setActiveIndex(newIndex);
+      // Small timeout ensures the DOM has updated layout for the new cards before scrolling
+      setTimeout(() => scrollToIndex(newIndex), 50);
+    } else if (activeIndex >= selectedFiles.length && selectedFiles.length > 0) {
+      // File deleted, keep activeIndex in bounds
+      setActiveIndex(selectedFiles.length - 1);
+    }
+    prevLengthRef.current = selectedFiles.length;
+  }, [selectedFiles.length, activeIndex, scrollToIndex]);
+
   return (
     <div className="flex-1 flex flex-col h-full bg-background overflow-hidden">
-      <Header onNavigateTab={onNavigateTab} showBackButton={true} onBack={onBack} />
+      <Header onNavigateTab={onNavigateTab} showBackButton={true} onBack={onBack} title="Checkout" />
 
       {/* Main Form Content */}
-      <main className="flex-1 overflow-y-auto pb-48 flex flex-col gap-5">
+      <main className="flex-1 overflow-y-auto pb-[142px] flex flex-col gap-5">
 
         {/* ─── Document Carousel ─── */}
         <section className="pt-4">
           <div className="mb-3 px-5">
-            <h2 className="text-[12px] font-bold text-on-surface-variant uppercase tracking-widest">Documents ({selectedFiles.length})</h2>
+            <h2 className="section-label">Documents ({selectedFiles.length})</h2>
           </div>
 
           {/* Hidden Input */}
@@ -130,13 +150,13 @@ export default function CheckoutScreen({
             className="hidden"
           />
 
-          {/* Scrollable carousel */}
           <div
             ref={carouselRef}
             onScroll={handleScroll}
-            className="flex overflow-x-auto no-scrollbar gap-3 py-3 px-4 snap-x snap-mandatory scroll-smooth"
-            style={{ scrollPaddingInline: '16px' }}
+            className="flex overflow-x-auto no-scrollbar gap-5 py-3 snap-x snap-mandatory scroll-smooth"
           >
+            {/* Left Spacer to center the first card */}
+            <div className="w-[calc(50%-110px)] flex-shrink-0" />
             {selectedFiles.map((file, idx) => {
               const isActive = idx === activeIndex;
               return (
@@ -144,7 +164,7 @@ export default function CheckoutScreen({
                   key={idx}
                   data-file-index={idx}
                   onClick={() => handleCardTap(idx)}
-                  className={`relative flex-shrink-0 snap-center flex flex-col items-center justify-center rounded-2xl transition-all duration-300 ease-out cursor-pointer ${isActive
+                  className={`relative flex-shrink-0 snap-center flex flex-col items-center justify-start rounded-3xl transition-all duration-300 ease-out cursor-pointer ${isActive
                       ? 'w-[220px] h-[280px] bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.3)] scale-100 z-10'
                       : 'w-[160px] h-[220px] bg-surface-container-lowest border border-outline-variant/30 text-on-surface opacity-60 scale-95'
                     }`}
@@ -153,39 +173,36 @@ export default function CheckoutScreen({
                   {isActive && (
                     <button
                       onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
-                      className="absolute -top-2 -right-2 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
+                      className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-error text-white rounded-full shadow-md active:scale-90 transition-all hover:bg-red-700 z-20"
                     >
-                      <span className="material-symbols-outlined text-[14px]">close</span>
+                      <span className="material-symbols-outlined text-[16px]">close</span>
                     </button>
                   )}
 
-                  {/* PDF Icon */}
-                  <div className={`rounded-xl mb-3 flex items-center justify-center ${isActive ? 'bg-white/15 p-5' : 'bg-primary/5 p-4'
-                    }`}>
-                    <span className={`material-symbols-outlined ${isActive ? 'text-[52px] text-white' : 'text-[40px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-                      description
-                    </span>
-                  </div>
-
-                  {/* File name */}
-                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[15px] text-white' : 'text-xs text-on-surface'
-                    }`}>
-                    {file.name}
-                  </span>
-
-                  {/* Meta info */}
-                  <span className={`text-center mt-1 ${isActive ? 'text-xs text-white/70' : 'text-[10px] text-on-surface-variant'
-                    }`}>
-                    {file.pages} pages · {file.size}
-                  </span>
-
-                  {/* Active file badge */}
-                  {isActive && (
-                    <div className="mt-3 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="material-symbols-outlined text-[12px]">edit</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider">Editing</span>
+                  {/* PDF Icon or Preview Thumbnail */}
+                  {file.previewUrl ? (
+                    <div className={`w-full flex-shrink-0 overflow-hidden rounded-t-3xl bg-white ${isActive ? 'h-[230px]' : 'h-[175px]'}`}>
+                      <img src={file.previewUrl} alt={file.name} className="w-full h-full object-cover object-center" />
+                    </div>
+                  ) : (
+                    <div className={`w-full flex-shrink-0 overflow-hidden rounded-t-3xl flex items-center justify-center ${isActive ? 'h-[230px] bg-white/10' : 'h-[175px] bg-primary/5'}`}>
+                      <span className={`material-symbols-outlined ${isActive ? 'text-[64px] text-white' : 'text-[48px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                        description
+                      </span>
                     </div>
                   )}
+
+                  <div className="flex-1 flex flex-col items-center justify-center w-full px-2">
+                    {/* File name */}
+                    <span className={`text-center font-bold truncate w-full ${isActive ? 'text-[13px] text-white' : 'text-[10px] text-on-surface'}`}>
+                      {file.name}
+                    </span>
+
+                    {/* Meta info */}
+                    <span className={`text-center mt-0.5 ${isActive ? 'text-[10px] text-white/70' : 'text-[9px] text-on-surface-variant'}`}>
+                      {file.pages} pages · {file.size}
+                    </span>
+                  </div>
                 </div>
               );
             })}
@@ -193,13 +210,21 @@ export default function CheckoutScreen({
             {/* Add More Card */}
             <button
               onClick={triggerAddFileSelect}
-              className="flex-shrink-0 snap-center bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-2xl flex flex-col items-center justify-center w-[140px] h-[220px] transition-all active:scale-95 duration-150 opacity-80 hover:opacity-100"
+              disabled={isUploading}
+              className={`flex-shrink-0 snap-end bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-3xl flex flex-col items-center justify-center w-[140px] h-[220px] transition-all duration-150 ${isUploading ? 'opacity-50 cursor-not-allowed' : 'active:scale-95 opacity-80 hover:opacity-100'}`}
             >
               <div className="p-3 border-2 border-dashed border-outline-variant/40 rounded-full mb-3">
-                <span className="material-symbols-outlined text-on-surface-variant text-[24px]">add</span>
+                <span className={`material-symbols-outlined text-on-surface-variant text-[24px] ${isUploading ? 'animate-spin' : ''}`}>
+                  {isUploading ? 'refresh' : 'add'}
+                </span>
               </div>
-              <span className="font-bold text-on-surface-variant text-xs">Add Files</span>
+              <span className="font-bold text-on-surface-variant text-xs">
+                {isUploading ? 'Uploading...' : 'Add Files'}
+              </span>
             </button>
+
+            {/* Right Spacer with snap-end to keep padding equal to the card gap */}
+            <div className="w-px flex-shrink-0 snap-end" />
           </div>
 
           {/* Dot indicators */}
@@ -210,8 +235,8 @@ export default function CheckoutScreen({
                   key={idx}
                   onClick={() => { setActiveIndex(idx); scrollToIndex(idx); }}
                   className={`rounded-full transition-all duration-300 ${idx === activeIndex
-                      ? 'w-6 h-2 bg-primary'
-                      : 'w-2 h-2 bg-outline-variant/40 hover:bg-outline-variant'
+                      ? 'w-5 h-1.5 bg-primary'
+                      : 'w-1.5 h-1.5 bg-outline-variant/40 hover:bg-outline-variant'
                     }`}
                 />
               ))}
@@ -223,40 +248,40 @@ export default function CheckoutScreen({
         <div className="px-4 flex flex-col gap-4">
 
           {/* Copies Control */}
-          <section className="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex items-center justify-between">
+          <section className="bg-surface-container-lowest rounded-[40px] p-4 shadow-sm border border-outline-variant/30 flex items-center justify-between">
             <div>
-              <h2 className="font-bold text-[15px] text-on-surface">Copies</h2>
+              <h2 className="font-bold text-sm text-on-surface px-1">Copies</h2>
             </div>
-            <div className="flex items-center bg-secondary rounded-full px-1 py-1 gap-3.5 text-white select-none shadow-[0_2px_8px_rgba(0,107,95,0.2)]">
+            <div className="flex items-center bg-secondary rounded-full px-3 py-2 gap-4 text-white select-none shadow-[0_2px_8px_rgba(0,107,95,0.2)]">
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
                 onClick={() => updateSetting('copies', Math.max(1, copies - 1))}
               >
-                <span className="material-symbols-outlined text-[18px]">remove</span>
+                <span className="material-symbols-outlined text-[20px]">remove</span>
               </button>
-              <span className="font-extrabold w-4 text-center text-sm">{copies}</span>
+              <span className="font-extrabold w-5 text-center text-[15px]">{copies}</span>
               <button
-                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-90 transition-all"
                 onClick={() => updateSetting('copies', copies + 1)}
               >
-                <span className="material-symbols-outlined text-[18px]">add</span>
+                <span className="material-symbols-outlined text-[20px]">add</span>
               </button>
             </div>
           </section>
 
           {/* Print Settings */}
-          <section className="bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-6">
+          <section className="bg-surface-container-lowest rounded-3xl p-4 shadow-sm border border-outline-variant/30 flex flex-col gap-6">
 
             {/* Print Color */}
             <div>
-              <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Print color</h3>
+              <h3 className="section-label mb-3">Print color</h3>
               <div className="grid grid-cols-2 gap-3">
 
                 {/* Colored */}
                 <button
                   type="button"
                   onClick={() => updateSetting('color', 'coloured')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${color === 'coloured'
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-200 ${color === 'coloured'
                       ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
                     }`}
@@ -276,7 +301,7 @@ export default function CheckoutScreen({
                 <button
                   type="button"
                   onClick={() => updateSetting('color', 'bw')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${color === 'bw'
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-200 ${color === 'bw'
                       ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
                     }`}
@@ -296,14 +321,14 @@ export default function CheckoutScreen({
 
             {/* Orientation */}
             <div>
-              <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Orientation</h3>
+              <h3 className="section-label mb-3">Orientation</h3>
               <div className="grid grid-cols-2 gap-3">
 
                 {/* Portrait */}
                 <button
                   type="button"
                   onClick={() => updateSetting('orientation', 'portrait')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${orientation === 'portrait'
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-200 ${orientation === 'portrait'
                       ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
                     }`}
@@ -323,7 +348,7 @@ export default function CheckoutScreen({
                 <button
                   type="button"
                   onClick={() => updateSetting('orientation', 'landscape')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${orientation === 'landscape'
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-200 ${orientation === 'landscape'
                       ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
                     }`}
@@ -356,18 +381,18 @@ export default function CheckoutScreen({
             </div>
             {/* Payment Method */}
             <div className="pt-4 border-t border-outline-variant/30">
-              <h3 className="font-bold text-[13px] text-on-surface-variant mb-3 uppercase tracking-wider">Payment Method</h3>
+              <h3 className="section-label mb-3">Payment Method</h3>
               <div className="flex flex-col gap-3">
                 {/* Pay at Kiosk */}
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('kiosk')}
-                  className={`flex items-center gap-3 p-3 rounded-xl text-left transition-all ${paymentMethod === 'kiosk'
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-left transition-all duration-200 ${paymentMethod === 'kiosk'
                       ? 'border-2 border-secondary bg-surface-container-highest shadow-sm'
                       : 'border border-outline-variant/30 hover:bg-surface-container-low'
                     }`}
                 >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${paymentMethod === 'kiosk' ? 'bg-secondary/10 text-secondary' : 'bg-surface-container-highest text-on-surface-variant'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${paymentMethod === 'kiosk' ? 'bg-secondary/10 text-secondary' : 'bg-surface-container-highest text-on-surface-variant'}`}>
                     <span className="material-symbols-outlined text-[24px]">point_of_sale</span>
                   </div>
                   <div className="flex-1">
@@ -383,9 +408,9 @@ export default function CheckoutScreen({
                 <button
                   type="button"
                   disabled={true}
-                  className="flex items-center gap-3 p-3 rounded-xl text-left border border-outline-variant/30 opacity-60 cursor-not-allowed bg-surface-container-lowest"
+                  className="flex items-center gap-3 p-3 rounded-2xl text-left border border-outline-variant/30 opacity-60 cursor-not-allowed bg-surface-container-lowest"
                 >
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-surface-container-highest text-on-surface-variant">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-surface-container-highest text-on-surface-variant">
                     <span className="material-symbols-outlined text-[24px]">phone_iphone</span>
                   </div>
                   <div className="flex-1">
@@ -402,28 +427,21 @@ export default function CheckoutScreen({
       </main>
 
       {/* Floating Bottom action sheet */}
-      <div className="absolute bottom-0 w-full p-4 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-col gap-3 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.03)]">
+      <div className="absolute bottom-0 w-full px-4 pt-3 pb-6 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-col gap-2.5 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.03)]">
 
         {/* Order Summary */}
-        <div className="bg-surface-container-low p-3.5 border border-outline-variant/30 flex items-center justify-between rounded-xl">
-          <div className="flex items-center gap-3">
-            <div className="bg-surface-container-highest p-1.5 rounded-lg border border-outline-variant/30">
-              <span className="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
-            </div>
-            <span className="font-bold text-on-surface text-sm">
-              {selectedFiles.length} {selectedFiles.length === 1 ? 'doc' : 'docs'}, {totalPages} {totalPages === 1 ? 'page' : 'pages'}
-            </span>
-          </div>
-          <div>
-            <span className="font-extrabold text-lg text-primary">₹{totalEstimatedCost.toFixed(2)}</span>
-          </div>
+        <div className="flex items-center justify-between px-1 py-1 select-none">
+          <span className="font-semibold text-on-surface-variant text-sm">
+            Total ({selectedFiles.length} {selectedFiles.length === 1 ? 'doc' : 'docs'}, {totalPages} {totalPages === 1 ? 'page' : 'pages'})
+          </span>
+          <span className="font-bold text-base text-primary">₹{totalEstimatedCost.toFixed(2)}</span>
         </div>
 
-        <div className="mt-2">
+        <div>
           <button 
             onClick={onProceed}
             disabled={isProcessing || selectedFiles.length === 0}
-            className="btn-primary w-full shadow-lg"
+            className="btn-primary w-full !h-12 shadow-lg !rounded-full"
           >
             {isProcessing ? (
               <span className="material-symbols-outlined text-[20px] animate-spin">refresh</span>

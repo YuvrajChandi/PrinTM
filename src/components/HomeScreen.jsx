@@ -24,7 +24,8 @@ export default function HomeScreen({
             onUploadFile({
               name: data.fileName,
               size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-              pages: data.pageCount
+              pages: data.pageCount,
+              previewUrl: data.previewUrl
             });
           } else {
             alert("Only PDF files are supported!");
@@ -92,7 +93,7 @@ export default function HomeScreen({
             disabled={isUploading}
             className="relative z-10 w-full bg-white text-primary dark:text-[#0059bb] font-bold py-3.5 px-5 flex items-center gap-4 rounded-xl active:scale-[0.97] transition-all shadow-lg hover:shadow-xl group disabled:opacity-50"
           >
-            <div className="w-12 h-12 bg-primary/10 dark:bg-[#0059bb]/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+            <div className="w-12 h-12 bg-primary/10 dark:bg-[#0059bb]/10 rounded-md flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200 shrink-0">
               {isUploading ? (
                 <span className="material-symbols-outlined text-[26px] animate-spin">refresh</span>
               ) : (
@@ -118,8 +119,8 @@ export default function HomeScreen({
         {/* Quick Print templates */}
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-headline-sm font-bold text-on-surface">Quick Print</h3>
-            <button className="text-label-md font-semibold text-primary py-1 px-2.5 rounded-lg hover:bg-primary/5 transition-colors">
+            <h3 className="text-base font-bold text-on-surface">Quick Print</h3>
+            <button className="text-[11px] font-semibold text-primary py-1.5 px-3 rounded-lg hover:bg-primary/5 active:scale-[0.97] transition-all duration-200">
               View All
             </button>
           </div>

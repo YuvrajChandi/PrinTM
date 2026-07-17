@@ -49,7 +49,8 @@ export const MockApi = {
     return {
       fileId: 'file_' + Math.random().toString(36).substring(2, 9),
       fileName: fileObject.name || 'document.pdf',
-      pageCount: fakePageCount
+      pageCount: fakePageCount,
+      previewUrl: 'https://placehold.co/400x560/e2e8f0/475569?text=PDF+Preview'
     };
   },
 
@@ -89,9 +90,40 @@ export const MockApi = {
 
   getJobs: async () => {
     await delay(300);
-    const jobs = JSON.parse(localStorage.getItem('mockJobs') || '[]');
+    let jobs = JSON.parse(localStorage.getItem('mockJobs') || 'null');
     
-    // Simulate progression: any pending job older than 15s becomes completed
+    if (jobs === null || jobs.length === 0) {
+      // Seed initial completed jobs for preview
+      const seedJobs = [
+        {
+          jobId: 'JOB-8429',
+          status: 'completed',
+          createdAt: new Date(Date.now() - 3600000 * 3).toISOString(), // 3 hours ago
+          orderData: {
+            files: [
+              { name: 'lecture_notes_week4.pdf', size: '2.4 MB', pages: 12, copies: 1, color: 'bw', orientation: 'portrait', duplex: true },
+              { name: 'lab_report_final.pdf', size: '4.1 MB', pages: 8, copies: 2, color: 'coloured', orientation: 'portrait', duplex: false }
+            ],
+            paymentMethod: 'kiosk'
+          }
+        },
+        {
+          jobId: 'JOB-3195',
+          status: 'completed',
+          createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), // 24 hours ago
+          orderData: {
+            files: [
+              { name: 'resume_2026.pdf', size: '0.8 MB', pages: 1, copies: 3, color: 'bw', orientation: 'portrait', duplex: false }
+            ],
+            paymentMethod: 'kiosk'
+          }
+        }
+      ];
+      localStorage.setItem('mockJobs', JSON.stringify(seedJobs));
+      jobs = seedJobs;
+    }
+    
+    // Simulate progression: any pending/ready job older than 60s becomes completed
     let changed = false;
     const updatedJobs = jobs.map(job => {
       if (job.status === 'ready' || job.status === 'pending') {

@@ -57,6 +57,7 @@
   --color-outline-variant: #c1c6d7;
 
   --radius-default: 0.5rem;
+  --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   
@@ -175,7 +176,11 @@
   }
   
   .btn-primary {
-    @apply bg-primary text-on-primary font-bold py-3.5 px-5 flex items-center justify-center gap-2 rounded-xl active:scale-[0.97] transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:active:scale-100;
+    @apply bg-primary text-on-primary font-bold h-12 px-5 flex items-center justify-center gap-2 rounded-md active:scale-[0.97] transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:active:scale-100;
+  }
+
+  .section-label {
+    @apply text-[11px] font-bold text-on-surface-variant uppercase tracking-widest;
   }
 
   .gradient-primary {

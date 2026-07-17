@@ -17,8 +17,8 @@ const DEFAULT_SETTINGS = {
   duplex: false
 };
 
-function createFile(name, pages, size) {
-  return { name, pages, size, ...DEFAULT_SETTINGS };
+function createFile(name, pages, size, previewUrl) {
+  return { name, pages, size, previewUrl, ...DEFAULT_SETTINGS };
 }
 
 export default function App() {
@@ -41,7 +41,35 @@ export default function App() {
     const fetchJobs = async () => {
       try {
         const data = await MockApi.getJobs();
-        setJobs(data);
+        const mappedJobs = data.map(job => {
+          const files = job.orderData?.files || [];
+          const totalPages = files.reduce((acc, f) => acc + (f.pages || 1), 0);
+          const totalCopies = files.length > 0 ? Math.max(...files.map(f => f.copies || 1)) : 1;
+          const filename = files.length > 1 
+            ? `${files.length} documents` 
+            : (files[0]?.name || 'document.pdf');
+          
+          return {
+            id: job.jobId,
+            filename,
+            pages: totalPages,
+            copies: totalCopies,
+            timestamp: new Date(job.createdAt).toLocaleString('en-US', { 
+              day: 'numeric', 
+              month: 'short', 
+              year: 'numeric', 
+              hour: '2-digit', 
+              minute: '2-digit', 
+              hour12: true 
+            }),
+            status: job.status,
+            printCode: job.jobId,
+            files: files,
+            paymentMethod: job.orderData?.paymentMethod || 'kiosk',
+            createdAt: job.createdAt
+          };
+        });
+        setJobs(mappedJobs);
       } catch (err) {
         console.error("Failed to fetch jobs", err);
       }
@@ -67,7 +95,7 @@ export default function App() {
   // --- Action handlers ---
 
   const handleUploadFile = (newFile) => {
-    const file = createFile(newFile.name, newFile.pages, newFile.size);
+    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl);
     setSelectedFiles(prev => [...prev, file]);
     setCurrentPage('checkout');
   };
@@ -83,7 +111,7 @@ export default function App() {
   };
 
   const handleAddFileInCheckout = (newFile) => {
-    const file = createFile(newFile.name, newFile.pages, newFile.size);
+    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl);
     setSelectedFiles(prev => [...prev, file]);
   };
 
@@ -124,13 +152,6 @@ export default function App() {
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  const handlePrintAgain = (completedJob) => {
-    const file = createFile(completedJob.filename, completedJob.pages, '1.2 MB');
-    file.copies = completedJob.copies;
-    setSelectedFiles([file]);
-    setCurrentPage('checkout');
   };
 
   const handleLogout = () => {
@@ -186,7 +207,6 @@ export default function App() {
                     setGeneratedCode(code);
                     setCurrentPage('print-code');
                   }}
-                  onPrintAgain={handlePrintAgain}
                   onNavigateTab={setActiveTab}
                 />
               )}
@@ -206,18 +226,18 @@ export default function App() {
             </div>
 
             {/* Persistent Bottom NavBar */}
-            <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-16 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-full shadow-lg z-50 flex items-center justify-between p-1.5 overflow-hidden">
+            <nav className="absolute bottom-5 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-[60px] bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-full shadow-lg z-50 flex items-center justify-between p-1.5 overflow-hidden">
               
               {/* Home */}
               <button 
                 onClick={() => setActiveTab('home')}
                 className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'home' 
-                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-[11px] shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 min-w-[48px] rounded-full flex items-center justify-center'
                 }`}
               >
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'home' ? "'FILL' 1" : "'FILL' 0" }}>home</span>
+                <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: activeTab === 'home' ? "'FILL' 1" : "'FILL' 0" }}>home</span>
                 {activeTab === 'home' && <span>Home</span>}
               </button>
 
@@ -226,11 +246,11 @@ export default function App() {
                 onClick={() => setActiveTab('my-jobs')}
                 className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'my-jobs' 
-                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-[11px] shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 min-w-[48px] rounded-full flex items-center justify-center'
                 }`}
               >
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'my-jobs' ? "'FILL' 1" : "'FILL' 0" }}>description</span>
+                <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: activeTab === 'my-jobs' ? "'FILL' 1" : "'FILL' 0" }}>description</span>
                 {activeTab === 'my-jobs' && <span>My Jobs</span>}
               </button>
 
@@ -239,11 +259,11 @@ export default function App() {
                 onClick={() => setActiveTab('info')}
                 className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'info' 
-                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-[11px] shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 min-w-[48px] rounded-full flex items-center justify-center'
                 }`}
               >
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'info' ? "'FILL' 1" : "'FILL' 0" }}>info</span>
+                <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: activeTab === 'info' ? "'FILL' 1" : "'FILL' 0" }}>info</span>
                 {activeTab === 'info' && <span>Info</span>}
               </button>
 
@@ -252,11 +272,11 @@ export default function App() {
                 onClick={() => setActiveTab('profile')}
                 className={`transition-all duration-300 ease-in-out ${
                   activeTab === 'profile' 
-                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-xs shadow-md shadow-primary/20' 
-                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 rounded-full flex items-center justify-center'
+                    ? 'h-full bg-primary text-on-primary px-5 rounded-full flex items-center justify-center gap-2 font-bold text-[11px] shadow-md shadow-primary/20' 
+                    : 'h-full text-slate-400 dark:text-slate-500 hover:text-primary px-4 min-w-[48px] rounded-full flex items-center justify-center'
                 }`}
               >
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: activeTab === 'profile' ? "'FILL' 1" : "'FILL' 0" }}>person</span>
+                <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: activeTab === 'profile' ? "'FILL' 1" : "'FILL' 0" }}>person</span>
                 {activeTab === 'profile' && <span>Profile</span>}
               </button>
 

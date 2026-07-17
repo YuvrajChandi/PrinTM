@@ -75,7 +75,8 @@ Accepts a file upload and returns metadata about the file, crucially including t
 {
   "fileId": "unique_file_id_882",
   "fileName": "assignment.pdf",
-  "pageCount": 10
+  "pageCount": 10,
+  "previewUrl": "https://storage.example.com/previews/unique_file_id_882.jpg"
 }
 ```
 
@@ -135,13 +136,23 @@ Returns a list of all historical and active jobs for the currently authenticated
 ```json
 [
   {
-    "id": "JOB-9988",
-    "filename": "assignment.pdf",
-    "pages": 10,
-    "copies": 2,
-    "timestamp": "24 Jun 2026, 10:15 AM",
-    "status": "ready",
-    "printCode": "JOB-9988"
+    "jobId": "JOB-9988",
+    "status": "completed",
+    "createdAt": "2026-07-17T06:18:00.000Z",
+    "orderData": {
+      "paymentMethod": "kiosk",
+      "files": [
+        {
+          "name": "lecture_notes_week4.pdf",
+          "size": "2.4 MB",
+          "pages": 12,
+          "copies": 1,
+          "color": "bw",
+          "orientation": "portrait",
+          "duplex": true
+        }
+      ]
+    }
   }
 ]
 ```

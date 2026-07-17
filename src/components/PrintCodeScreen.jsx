@@ -21,7 +21,7 @@ export default function PrintCodeScreen({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-background overflow-hidden">
-      <Header onNavigateTab={onNavigateTab} showBackButton={true} onBack={onClose} />
+      <Header onNavigateTab={onNavigateTab} showBackButton={true} onBack={onClose} title="Print Code" />
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto py-8 px-6 flex flex-col items-center justify-center">
@@ -30,7 +30,7 @@ export default function PrintCodeScreen({
           {/* QR Code Card */}
           <div className="bg-surface-container-highest p-5 shadow-[0px_4px_24px_rgba(0,89,187,0.06)] border border-outline-variant/30 mb-8 aspect-square w-60 flex items-center justify-center relative overflow-hidden group rounded-2xl">
             <div className="absolute inset-0 opacity-5 pointer-events-none bg-gradient-to-br from-surface-container-highest to-surface-container-lowest"></div>
-            <div className="relative z-10 transition-transform duration-500 group-hover:scale-105 bg-white p-2 rounded-xl">
+            <div className="relative z-10 transition-transform duration-300 group-hover:scale-105 bg-white p-2 rounded-md">
               <QRCodeSVG 
                 value={printCode}
                 size={180}
@@ -64,7 +64,7 @@ export default function PrintCodeScreen({
           <button 
             onClick={handleSave}
             disabled={saveStatus !== 'idle'}
-            className={`flex items-center justify-center gap-3 w-full py-4 px-6 border-2 font-bold transition-all duration-200 shadow-sm rounded-xl ${
+            className={`flex items-center justify-center gap-3 w-full py-4 px-6 border-2 font-bold transition-all duration-200 shadow-sm rounded-md ${
               saveStatus === 'idle' 
                 ? 'border-primary text-primary hover:bg-primary/5 active:scale-95' 
                 : saveStatus === 'saving'

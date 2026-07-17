@@ -51,7 +51,7 @@ export default function ProfileScreen({
                   <span className="text-3xl font-black tracking-tight">₹ 150.00</span>
                 </div>
               </div>
-              <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 flex items-center gap-2">
+              <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 rounded-md text-sm font-bold transition-all duration-200 active:scale-95 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">add</span>
                 Add Funds
               </button>
@@ -65,7 +65,7 @@ export default function ProfileScreen({
           <div className="card-standard !p-0 overflow-hidden">
             
             {/* Help and Support */}
-            <button className="w-full flex items-center justify-between p-4.5 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors active:scale-[0.99] text-left">
+            <button className="w-full flex items-center justify-between px-5 py-4 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.99] text-left">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant">help</span>
                 <span className="text-sm text-on-surface font-semibold">Help & Support</span>
@@ -74,7 +74,7 @@ export default function ProfileScreen({
             </button>
 
             {/* Dark Mode Toggle */}
-            <div className="w-full flex items-center justify-between p-4.5">
+            <div className="w-full flex items-center justify-between px-5 py-4">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-on-surface-variant">dark_mode</span>
                 <span className="text-sm text-on-surface font-semibold">Dark Mode</span>
@@ -98,7 +98,7 @@ export default function ProfileScreen({
           <button 
             onClick={handleLogoutClick}
             disabled={loggingOut}
-            className={`w-full flex items-center justify-center gap-2 py-3 px-6 border font-bold text-xs transition-all duration-200 rounded-xl ${
+            className={`w-full flex items-center justify-center gap-2 py-3 px-6 border font-bold text-xs transition-all duration-200 rounded-md ${
               loggingOut 
                 ? 'border-outline-variant/50 bg-surface-container-high text-on-surface-variant cursor-not-allowed'
                 : 'border-red-200 hover:border-red-400 text-error hover:bg-red-50/20 active:scale-[0.98]'
