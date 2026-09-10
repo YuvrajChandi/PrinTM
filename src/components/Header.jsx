@@ -3,7 +3,7 @@ import React from 'react';
 export default function Header({ 
   showBackButton = false, 
   onBack,
-  title = "PrinTM"
+  title = "PrinTMM"
 }) {
   const isDefaultLogo = title === "PrinTM";
   return (
