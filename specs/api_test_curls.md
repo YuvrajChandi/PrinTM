@@ -74,11 +74,12 @@ curl -X POST "$BASE_URL/api/jobs/create" \
     ]
   }'
 ```
-*Note the returned `jobId` and `qrData` (e.g., `JOB-9988`).*
+*Note the returned `jobId` and `qrData` — a 6-digit numeric string (e.g., `728491`). Store it for the steps below.*
 
 ### 3.2 Poll Job Status
+*(Replace `728491` with your actual job ID)*
 ```bash
-curl -X GET "$BASE_URL/api/jobs/JOB-9988/status" \
+curl -X GET "$BASE_URL/api/jobs/728491/status" \
   -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
@@ -93,14 +94,14 @@ curl -X GET "$BASE_URL/api/jobs" \
 ## 4. Kiosk Monitor Endpoints (Local Pi Screen)
 
 ### 4.1 Lookup Job by PIN Code
-*(Simulates typing the code on the kiosk keyboard)*
+*(Simulates typing the 6-digit numeric code on the kiosk keyboard)*
 ```bash
-curl -X GET "$BASE_URL/api/kiosk/jobs/lookup?code=JOB-9988"
+curl -X GET "$BASE_URL/api/kiosk/jobs/lookup?code=728491"
 ```
 
 ### 4.2 Trigger Print & Mark Paid
 *(Simulates confirming payment and clicking Print on the kiosk monitor)*
 ```bash
-curl -X POST "$BASE_URL/api/kiosk/jobs/JOB-9988/print" \
+curl -X POST "$BASE_URL/api/kiosk/jobs/728491/print" \
   -H "Content-Type: application/json"
 ```

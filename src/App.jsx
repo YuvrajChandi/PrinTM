@@ -38,7 +38,7 @@ export default function App() {
   const [paymentMethod, setPaymentMethod] = useState('kiosk'); // 'upi' | 'kiosk'
 
   // Generated Print Code
-  const [generatedCode, setGeneratedCode] = useState("PM-7284");
+  const [generatedCode, setGeneratedCode] = useState("000000");
 
   // Database of Print Jobs
   const [jobs, setJobs] = useState([]);

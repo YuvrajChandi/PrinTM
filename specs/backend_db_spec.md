@@ -59,14 +59,18 @@ CREATE TABLE uploaded_files (
 
 ### 2.4 Print Jobs (Orders) Table
 Stores the parent order details created during checkout `/api/jobs/create`.
+* **ID Format:** Exactly 6 digits, stored as `TEXT` to preserve leading zeros (e.g., `'728491'`, `'004819'`).
+* **Generation:** `crypto.randomInt(0, 1000000).toString().padStart(6, '0')` with collision retry against active unprinted jobs.
+* **QR Data:** `qr_data` is set equal to `id`.
+
 ```sql
 CREATE TABLE print_jobs (
-    id TEXT PRIMARY KEY,                       -- Unique job ID (e.g. 'JOB-9988')
+    id TEXT PRIMARY KEY CHECK (length(id) = 6 AND id GLOB '[0-9][0-9][0-9][0-9][0-9][0-9]'),
     user_id TEXT REFERENCES users(id) ON DELETE RESTRICT,
     payment_method TEXT NOT NULL DEFAULT 'kiosk',  -- 'kiosk' (MVP), 'upi' (Future)
     payment_status TEXT NOT NULL DEFAULT 'unpaid', -- 'unpaid', 'paid'
     status TEXT NOT NULL DEFAULT 'ready',          -- 'ready', 'printing', 'completed', 'failed'
-    qr_data TEXT NOT NULL,                         -- Code string typed on keyboard or scanned (e.g. 'JOB-9988')
+    qr_data TEXT NOT NULL CHECK (length(qr_data) = 6 AND qr_data GLOB '[0-9][0-9][0-9][0-9][0-9][0-9]'),
     kiosk_id TEXT DEFAULT 'kiosk_main',            -- Ready for future multi-kiosk clustering
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -94,7 +98,7 @@ To return the expected nested format for the `GET /api/jobs` and `POST /api/jobs
 #### Reconstructed JSON Object:
 ```json
 {
-  "jobId": "JOB-9988",
+  "jobId": "728491",
   "status": "completed",
   "createdAt": "2026-07-17T06:18:00.000Z",
   "orderData": {

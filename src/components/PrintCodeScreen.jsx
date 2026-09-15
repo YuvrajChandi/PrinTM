@@ -3,7 +3,7 @@ import Header from './Header';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function PrintCodeScreen({ 
-  printCode = "PM-7284", 
+  printCode = "000000", 
   onClose,
   onNavigateTab
 }) {

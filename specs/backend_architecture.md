@@ -87,7 +87,15 @@ printm-backend/
 
 The backend directly serves a static web application on `http://localhost:5000/kiosk` for the monitor:
 * **UI Flow:**
-  1. **Idle Screen:** High-contrast, large text box: *"Enter 6-digit Job PIN to Print"*.
+  1. **Idle Screen:** High-contrast numeric input: *"Enter 6-digit Job PIN to Print"*.
+     * Input restricted to digits only (`inputmode="numeric"`, `pattern="[0-9]*"`, `maxlength="6"`).
+     * Submit/Fetch button disabled until exactly 6 digits are entered.
   2. **Confirmation Screen:** Shows file names, page counts, copies, duplex setting, and total price to collect.
   3. **Action:** Operator/Student presses Enter or clicks *"Confirm Payment & Print"*.
   4. **Printing Screen:** Triggers `POST /api/kiosk/jobs/{jobId}/print` -> Displays animation -> Returns to Idle.
+
+## 5. `JobService` — 6-Digit PIN Generation
+
+* Generate using: `crypto.randomInt(0, 1000000).toString().padStart(6, '0')`
+* Retry on collision: query `SELECT id FROM print_jobs WHERE id = ? AND status != 'completed'` before inserting — regenerate if a match is found.
+* Set `qr_data = id` always.

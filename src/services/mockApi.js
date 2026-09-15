@@ -68,22 +68,24 @@ export const MockApi = {
 
   createJob: async (orderData) => {
     await delay(1200);
-    // orderData would contain { files: [...], paymentMethod: 'pay_at_kiosk' }
-    const jobId = 'JOB-' + Math.floor(1000 + Math.random() * 9000);
+    // Generate a 6-digit zero-padded numeric PIN (matches backend spec)
+    const existing = JSON.parse(localStorage.getItem('mockJobs') || '[]');
+    let jobId;
+    do {
+      jobId = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+    } while (existing.some(j => j.jobId === jobId && j.status !== 'completed'));
     
-    // Save to localStorage so we can simulate state across app reloads if needed
-    const existingJobs = JSON.parse(localStorage.getItem('mockJobs') || '[]');
     const newJob = {
       jobId,
       status: 'ready',
       createdAt: new Date().toISOString(),
       orderData
     };
-    localStorage.setItem('mockJobs', JSON.stringify([newJob, ...existingJobs]));
+    localStorage.setItem('mockJobs', JSON.stringify([newJob, ...existing]));
 
     return {
       jobId,
-      qrData: jobId, // As requested, just generating the string
+      qrData: jobId,
       status: 'ready'
     };
   },
@@ -96,7 +98,7 @@ export const MockApi = {
       // Seed initial completed jobs for preview
       const seedJobs = [
         {
-          jobId: 'JOB-8429',
+          jobId: '842913',
           status: 'completed',
           createdAt: new Date(Date.now() - 3600000 * 3).toISOString(), // 3 hours ago
           orderData: {
@@ -108,7 +110,7 @@ export const MockApi = {
           }
         },
         {
-          jobId: 'JOB-3195',
+          jobId: '319502',
           status: 'completed',
           createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), // 24 hours ago
           orderData: {

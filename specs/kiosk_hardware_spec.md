@@ -115,8 +115,11 @@ chromium-browser \
 ```
 
 ### 5.2 User Input Mechanism
-* **Phase 1 (MVP):** Standard USB / Wireless keyboard connected to the Raspberry Pi. The student types the 6-character code (e.g., `JOB-9988` or `PM-7284`) into the prominent input field on the screen and presses `Enter`.
-* **Phase 2 (Future):** USB barcode/QR scanner or Pi Camera module scanning the QR code directly.
+* **Phase 1 (MVP):** Standard USB / Wireless keyboard connected to the Raspberry Pi.
+  * **Input Format:** Exactly 6 numeric digits, zero-padded, no prefixes (e.g., `728491`).
+  * **Input Validation:** Restrict to numbers only (`0-9`), `maxlength="6"`, and disable the submit/fetch button until exactly 6 digits are typed.
+  * The student types the 6-digit PIN into the prominent input field on the screen and presses `Enter`.
+* **Phase 2 (Future):** USB barcode/QR scanner or Pi Camera module scanning the QR code directly (which encodes the exact same 6-digit numeric string).
 
 ---
 

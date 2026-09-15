@@ -47,7 +47,7 @@ This roadmap guides the step-by-step implementation of the PrintM backend on a R
 - [ ] Implement `GET /api/pricing/rates` to serve in-memory rates.
 - [ ] Implement `POST /api/jobs/create`:
   - Verify Bearer token.
-  - Generate unique 6-digit job code (e.g. `JOB-9988` or `PM-7284`).
+  - Generate unique 6-digit numeric PIN: `crypto.randomInt(0, 1000000).toString().padStart(6, '0')` with collision retry.
   - Calculate authoritative total price on server using `fileId` page counts and user settings.
   - Insert row into `print_jobs` (`status = 'ready'`, `payment_status = 'unpaid'`).
   - Insert rows into `job_items`.

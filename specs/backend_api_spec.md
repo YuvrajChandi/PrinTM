@@ -96,8 +96,18 @@ Accepts a file upload directly onto the Raspberry Pi local storage and returns m
 
 ## 3. Order Generation & Job Management
 
-### 3.1 Create Job (Checkout)
-Submits the user's cart (files and settings) to generate a print job and a 6-character code (e.g. `PM-7284` or `728491`).
+### 3.1 Public Job ID & QR Data Specification
+* **Format:** Exactly 6 numeric digits, zero-padded, no prefixes (e.g., `"728491"`, `"004819"`).
+* **Storage Type:** Stored as `TEXT` in the database to strictly preserve leading zeros.
+* **Generation Logic:** Generated on the backend using cryptographically secure random integers:
+  ```javascript
+  crypto.randomInt(0, 1000000).toString().padStart(6, '0');
+  ```
+  *(Must retry on collision against active unprinted jobs).*
+* **QR Data:** The string encoded in `qrData` is set exactly equal to `jobId` (e.g., `"728491"`).
+
+### 3.2 Create Job (Checkout)
+Submits the user's cart (files and settings) to generate a print job and 6-digit PIN code.
 * **Endpoint:** `POST /api/jobs/create`
 * **Authorization:** Requires Bearer Token
 * **Request Payload:**
@@ -121,14 +131,13 @@ Submits the user's cart (files and settings) to generate a print job and a 6-cha
 * **Expected Response (200 OK):**
 ```json
 {
-  "jobId": "JOB-9988",
-  "qrData": "JOB-9988",
+  "jobId": "728491",
+  "qrData": "728491",
   "status": "ready"
 }
 ```
-*(Note: `qrData` contains the exact alphanumeric code entered on the kiosk keyboard or later scanned by camera).*
 
-### 3.2 Get User Jobs
+### 3.3 Get User Jobs
 Returns a list of all historical and active jobs for the currently authenticated user.
 * **Endpoint:** `GET /api/jobs`
 * **Authorization:** Requires Bearer Token
@@ -136,7 +145,7 @@ Returns a list of all historical and active jobs for the currently authenticated
 ```json
 [
   {
-    "jobId": "JOB-9988",
+    "jobId": "728491",
     "status": "completed",
     "createdAt": "2026-07-17T06:18:00.000Z",
     "orderData": {
@@ -158,8 +167,8 @@ Returns a list of all historical and active jobs for the currently authenticated
 ]
 ```
 
-### 3.3 Get Single Job Status (Polling)
-* **Endpoint:** `GET /api/jobs/{jobId}/status`
+### 3.4 Get Single Job Status (Polling)
+* **Endpoint:** `GET /api/jobs/{jobId}/status` (e.g., `GET /api/jobs/728491/status`)
 * **Expected Response (200 OK):**
 ```json
 {
@@ -169,17 +178,22 @@ Returns a list of all historical and active jobs for the currently authenticated
 
 ---
 
-## 4. Kiosk Monitor Endpoints (Local Pi Screen)
+## 4. Kiosk Monitor Endpoints & Input Requirements
 
 These endpoints are called by the Chromium Kiosk web interface running locally on the Raspberry Pi (`http://localhost:port/kiosk`).
 
-### 4.1 Lookup Job by Code
+### 4.1 Kiosk Input Constraints
+* **Type:** Numeric input only (`inputmode="numeric"`, regex restriction `[0-9]*`).
+* **Length:** Exactly 6 digits (`maxlength="6"`).
+* **Validation:** Form submit / "Fetch Job" button is disabled until exactly 6 digits are entered.
+
+### 4.2 Lookup Job by Code
 Called when a student types their 6-digit code or scans their QR on the kiosk.
-* **Endpoint:** `GET /api/kiosk/jobs/lookup?code=JOB-9988`
+* **Endpoint:** `GET /api/kiosk/jobs/lookup?code=728491`
 * **Expected Response (200 OK):**
 ```json
 {
-  "jobId": "JOB-9988",
+  "jobId": "728491",
   "status": "ready",
   "totalPrice": 24.0,
   "paymentMethod": "kiosk",
@@ -196,9 +210,9 @@ Called when a student types their 6-digit code or scans their QR on the kiosk.
 }
 ```
 
-### 4.2 Trigger Print & Mark Paid
+### 4.3 Trigger Print & Mark Paid
 Called when the user/operator confirms payment at the kiosk and taps "Print". The backend dispatches the print job to CUPS via `lp` command and marks the job status as `completed`.
-* **Endpoint:** `POST /api/kiosk/jobs/{jobId}/print`
+* **Endpoint:** `POST /api/kiosk/jobs/{jobId}/print` (e.g., `POST /api/kiosk/jobs/728491/print`)
 * **Request Payload:** None
 * **Expected Response (200 OK):**
 ```json
@@ -214,3 +228,4 @@ Called when the user/operator confirms payment at the kiosk and taps "Print". Th
 ## 5. Network & Ingress (Raspberry Pi 5)
 * **Cloudflare Tunnel (`cloudflared`):** The Pi backend runs locally on port (e.g. `5000` or `8000`) and is mapped to a public HTTPS domain via Cloudflare Tunnel.
 * **CORS Header:** Must allow requests from the deployed frontend origin (e.g., `https://printm.vercel.app`).
+
