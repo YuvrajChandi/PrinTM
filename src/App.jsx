@@ -17,8 +17,15 @@ const DEFAULT_SETTINGS = {
   duplex: false
 };
 
-function createFile(name, pages, size, previewUrl) {
-  return { name, pages, size, previewUrl, ...DEFAULT_SETTINGS };
+function createFile(name, pages, size, previewUrl, fileId = null) {
+  return { 
+    fileId: fileId || `file_${Math.random().toString(36).substring(2, 9)}`,
+    name, 
+    pages, 
+    size, 
+    previewUrl, 
+    ...DEFAULT_SETTINGS 
+  };
 }
 
 export default function App() {
@@ -95,13 +102,13 @@ export default function App() {
   // --- Action handlers ---
 
   const handleUploadFile = (newFile) => {
-    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl);
+    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl, newFile.fileId);
     setSelectedFiles(prev => [...prev, file]);
     setCurrentPage('checkout');
   };
 
   const handleSelectQuickTemplate = (name, pages) => {
-    const file = createFile(name, pages, `${(pages * 0.15).toFixed(1)} MB`);
+    const file = createFile(name, pages, `${(pages * 0.15).toFixed(1)} MB`, null, `tpl_${name.toLowerCase().replace(/\s+/g, '_')}`);
     setSelectedFiles([file]);
     setCurrentPage('checkout');
   };
@@ -111,7 +118,7 @@ export default function App() {
   };
 
   const handleAddFileInCheckout = (newFile) => {
-    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl);
+    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl, newFile.fileId);
     setSelectedFiles(prev => [...prev, file]);
   };
 

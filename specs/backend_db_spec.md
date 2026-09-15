@@ -138,4 +138,3 @@ The backend serves this directly on `GET /api/pricing/rates`.
 * **Automated Cleanup Cron:** To prevent the Raspberry Pi's storage from filling up, a background cron job runs every 6 hours:
   * Deletes files from `uploaded_files` and the filesystem where `created_at < datetime('now', '-24 hours')`.
   * Deletes expired OTP records where `expires_at < datetime('now')`.
-

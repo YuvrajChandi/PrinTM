@@ -21,6 +21,16 @@ A self-service printing kiosk (printer vending machine) paired with this **brows
 
 *Note: This repository contains the browser-based web frontend. The kiosk backend and printer integrations are developed separately.*
 
+## Backend & Hardware Specifications
+Comprehensive specifications for developing the Raspberry Pi 5 backend, SQLite database, CUPS printer integration, and Cloudflare Tunnel are documented in the **[`specs/`](file:///Users/yuvraj/Desktop/Printmv1/specs/README.md)** directory:
+- [API Specification](file:///Users/yuvraj/Desktop/Printmv1/specs/backend_api_spec.md)
+- [Database Specification (SQLite)](file:///Users/yuvraj/Desktop/Printmv1/specs/backend_db_spec.md)
+- [Hardware & CUPS Print Guide](file:///Users/yuvraj/Desktop/Printmv1/specs/kiosk_hardware_spec.md)
+- [Backend Architecture & Folder Structure](file:///Users/yuvraj/Desktop/Printmv1/specs/backend_architecture.md)
+- [Implementation Plan (AI/Dev Roadmap)](file:///Users/yuvraj/Desktop/Printmv1/specs/backend_implementation_plan.md)
+- [API Test Curls](file:///Users/yuvraj/Desktop/Printmv1/specs/api_test_curls.md)
+- [Environment Variables](file:///Users/yuvraj/Desktop/Printmv1/specs/backend_env_spec.md)
+
 ## Features
 - **Splash Screen Animation**: Simulated workspace syncing and loading indicator.
 - **Home Dashboard**:

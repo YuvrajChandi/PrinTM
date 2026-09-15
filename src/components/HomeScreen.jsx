@@ -22,6 +22,7 @@ export default function HomeScreen({
           if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
             const data = await MockApi.uploadFile(file);
             onUploadFile({
+              fileId: data.fileId,
               name: data.fileName,
               size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
               pages: data.pageCount,

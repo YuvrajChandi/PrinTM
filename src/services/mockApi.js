@@ -57,10 +57,10 @@ export const MockApi = {
   getPricingRates: async () => {
     await delay(300);
     return {
-      bw_single: 0.10,
-      bw_double: 0.15,
-      color_single: 0.50,
-      color_double: 0.80,
+      bw_single: 3.00,
+      bw_double: 5.00,
+      color_single: 10.00,
+      color_double: 18.00,
     };
   },
 

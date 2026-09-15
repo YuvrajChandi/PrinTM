@@ -214,4 +214,3 @@ Called when the user/operator confirms payment at the kiosk and taps "Print". Th
 ## 5. Network & Ingress (Raspberry Pi 5)
 * **Cloudflare Tunnel (`cloudflared`):** The Pi backend runs locally on port (e.g. `5000` or `8000`) and is mapped to a public HTTPS domain via Cloudflare Tunnel.
 * **CORS Header:** Must allow requests from the deployed frontend origin (e.g., `https://printm.vercel.app`).
-
