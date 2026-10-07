@@ -31,8 +31,11 @@ export default function LoginScreen({ onLoginSuccess }) {
     setIsLoading(true);
     setError('');
     try {
-      await MockApi.sendOtp(email);
+      const res = await MockApi.sendOtp(email);
       setStep('otp');
+      if (res && res.otp) {
+        setOtp(res.otp);
+      }
     } catch (err) {
       setError(err.message || 'Failed to send OTP');
     } finally {
