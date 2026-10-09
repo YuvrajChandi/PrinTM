@@ -32,6 +32,8 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('splash'); // 'splash' | 'main' | 'checkout' | 'checkout-confirm' | 'print-code'
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'my-jobs' | 'info' | 'profile'
   const [darkMode, setDarkMode] = useState(false);
+  const [userName, setUserName] = useState(() => localStorage.getItem('user_name') || 'Student');
+  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('user_email') || 'student@college.edu');
 
   // Print Settings State — settings are now per-file (starts empty)
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -165,14 +167,29 @@ export default function App() {
     localStorage.removeItem('kiosk_token');
     localStorage.removeItem('user_name');
     localStorage.removeItem('user_email');
+    setUserName('Student');
+    setUserEmail('');
     setSelectedFiles([]);
     setPaymentMethod('kiosk');
     setActiveTab('home');
     setCurrentPage('splash');
   };
 
-  const rawName = localStorage.getItem('user_name') || 'Student';
-  const displayUserName = rawName === 'Guest User' ? 'Student' : rawName;
+  const handleLoginSuccess = (user) => {
+    if (user && user.name) {
+      setUserName(user.name);
+    } else {
+      setUserName(localStorage.getItem('user_name') || 'Student');
+    }
+    if (user && user.email) {
+      setUserEmail(user.email);
+    } else {
+      setUserEmail(localStorage.getItem('user_email') || '');
+    }
+    setCurrentPage('main');
+  };
+
+  const displayUserName = userName === 'Guest User' ? 'Student' : userName;
 
   return (
     <MobileFrame>
@@ -183,6 +200,8 @@ export default function App() {
           <SplashScreen onFinish={() => {
             const token = localStorage.getItem('kiosk_token');
             if (token) {
+              setUserName(localStorage.getItem('user_name') || 'Student');
+              setUserEmail(localStorage.getItem('user_email') || '');
               setCurrentPage('main');
             } else {
               setCurrentPage('login');
@@ -191,7 +210,7 @@ export default function App() {
         )}
 
         {currentPage === 'login' && (
-          <LoginScreen onLoginSuccess={() => setCurrentPage('main')} />
+          <LoginScreen onLoginSuccess={handleLoginSuccess} />
         )}
 
         {currentPage === 'main' && (
@@ -226,8 +245,9 @@ export default function App() {
                   darkMode={darkMode}
                   onToggleDarkMode={setDarkMode}
                   onNavigateTab={setActiveTab}
-                  userName={localStorage.getItem('user_name') || "Durgesh Kumar"}
-                  userEmail={localStorage.getItem('user_email') || "Durgesh@sharda.ac.in"}
+                  userName={userName}
+                  userEmail={userEmail}
+                  onUpdateName={(newName) => setUserName(newName)}
                 />
               )}
             </div>

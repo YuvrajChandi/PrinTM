@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import Header from './Header';
+import { MockApi } from '../services/mockApi';
 
 export default function ProfileScreen({ 
   onLogout,
   darkMode,
   onToggleDarkMode,
-  userName = "Durgesh Kumar",
-  userEmail = "Durgesh@sharda.ac.in",
-  onNavigateTab
+  userName = "Student",
+  userEmail = "student@college.edu",
+  onNavigateTab,
+  onUpdateName
 }) {
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState(userName);
+  const [isSavingName, setIsSavingName] = useState(false);
+  const [nameError, setNameError] = useState('');
 
   const handleLogoutClick = () => {
     if (confirm('Are you sure you want to logout?')) {
@@ -17,6 +23,29 @@ export default function ProfileScreen({
       setTimeout(() => {
         onLogout();
       }, 1200);
+    }
+  };
+
+  const handleSaveName = async (e) => {
+    e.preventDefault();
+    if (!nameInput.trim()) {
+      setNameError('Name cannot be empty');
+      return;
+    }
+
+    setIsSavingName(true);
+    setNameError('');
+    try {
+      await MockApi.updateProfile(nameInput.trim());
+      if (onUpdateName) {
+        onUpdateName(nameInput.trim());
+      }
+      localStorage.setItem('user_name', nameInput.trim());
+      setIsEditingName(false);
+    } catch (err) {
+      setNameError(err.message || 'Failed to update name');
+    } finally {
+      setIsSavingName(false);
     }
   };
 
@@ -29,14 +58,58 @@ export default function ProfileScreen({
         
         {/* Profile Card */}
         <section>
-          <div className="card-standard flex flex-col items-center text-center">
+          <div className="card-standard flex flex-col items-center text-center relative">
             <div className="mb-4">
-              <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-inner">
-                <span className="text-3xl font-bold">{userName ? userName.charAt(0).toUpperCase() : 'U'}</span>
+              <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center shadow-md">
+                <span className="text-3xl font-extrabold">{userName ? userName.charAt(0).toUpperCase() : 'U'}</span>
               </div>
             </div>
-            <h2 className="text-headline-sm font-bold text-on-surface">{userName}</h2>
-            <p className="text-body-sm text-on-surface-variant mb-2">{userEmail}</p>
+
+            {!isEditingName ? (
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold text-on-surface">{userName}</h2>
+                  <button 
+                    onClick={() => { setNameInput(userName); setIsEditingName(true); setNameError(''); }}
+                    className="p-1 hover:bg-surface-container-high rounded-full transition-colors text-primary"
+                    title="Edit Name"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                  </button>
+                </div>
+                <p className="text-sm text-on-surface-variant mt-0.5 mb-1">{userEmail}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSaveName} className="w-full max-w-[260px] flex flex-col gap-2 mt-1">
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  placeholder="Your Full Name"
+                  className="w-full h-10 px-3 text-center text-sm font-bold bg-surface-container-low border border-primary rounded-lg outline-none focus:ring-2 focus:ring-primary/20"
+                  autoFocus
+                />
+                {nameError && (
+                  <p className="text-xs text-error font-medium">{nameError}</p>
+                )}
+                <div className="flex items-center justify-center gap-2 mt-1">
+                  <button
+                    type="submit"
+                    disabled={isSavingName}
+                    className="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-primary-container disabled:opacity-50"
+                  >
+                    {isSavingName ? 'Saving...' : 'Save'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setIsEditingName(false); setNameError(''); }}
+                    className="px-3 py-1.5 border border-outline-variant text-on-surface-variant text-xs font-bold rounded-lg hover:bg-surface-container-high"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </section>
 
@@ -64,6 +137,21 @@ export default function ProfileScreen({
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-widest mb-3.5 px-3">Settings</h3>
           <div className="card-standard !p-0 overflow-hidden">
             
+            {/* Edit Full Name Button */}
+            <button 
+              onClick={() => { setNameInput(userName); setIsEditingName(true); }}
+              className="w-full flex items-center justify-between px-5 py-4 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.99] text-left"
+            >
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-on-surface-variant">badge</span>
+                <div>
+                  <span className="text-sm text-on-surface font-semibold block">Full Name</span>
+                  <span className="text-xs text-on-surface-variant">{userName}</span>
+                </div>
+              </div>
+              <span className="material-symbols-outlined text-on-surface-variant text-[18px]">edit</span>
+            </button>
+
             {/* Help and Support */}
             <button className="w-full flex items-center justify-between px-5 py-4 border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.99] text-left">
               <div className="flex items-center gap-3">

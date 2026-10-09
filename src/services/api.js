@@ -35,14 +35,38 @@ export const Api = {
     return data;
   },
 
-  verifyOtp: async (email, otp) => {
+  verifyOtp: async (email, otp, name) => {
     const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp })
+      body: JSON.stringify({ email, otp, name })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Invalid OTP');
+    return data;
+  },
+
+  updateProfile: async (name) => {
+    const headers = getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+    const res = await fetch(`${API_BASE}/api/auth/profile`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ name })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to update profile');
+    return data;
+  },
+
+  getProfile: async () => {
+    const headers = getAuthHeaders();
+    const res = await fetch(`${API_BASE}/api/auth/me`, {
+      method: 'GET',
+      headers
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to fetch profile');
     return data;
   },
 
