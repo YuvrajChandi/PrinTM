@@ -259,7 +259,7 @@ export default function CheckoutScreen({
             className="flex overflow-x-auto no-scrollbar gap-5 py-3 snap-x snap-mandatory carousel-track"
           >
             {/* Left Spacer to center the first card */}
-            <div className="w-[calc(50%-110px)] flex-shrink-0" />
+            <div className="w-[calc(50%-105px)] flex-shrink-0" />
             {selectedFiles.map((file, idx) => {
               const isActive = idx === activeIndex;
               return (
@@ -267,96 +267,103 @@ export default function CheckoutScreen({
                   key={idx}
                   data-file-index={idx}
                   onClick={() => handleCardTap(idx)}
-                  className={`relative flex-shrink-0 snap-center snap-always carousel-card flex flex-col items-center justify-center rounded-2xl transition-all duration-300 ease-out cursor-pointer select-none ${isActive
-                      ? 'w-[220px] h-[280px] bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.3)] scale-100 z-10'
-                      : 'w-[160px] h-[220px] bg-surface-container-lowest border border-outline-variant/30 text-on-surface opacity-60 scale-95'
-                    }`}
+                  className="flex flex-col items-center flex-shrink-0 snap-center snap-always carousel-card cursor-pointer select-none"
                 >
-                  {/* Delete button */}
-                  {isActive && (
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
-                      className="absolute top-2 right-2 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
-                      title="Remove file"
-                    >
-                      <span className="material-symbols-outlined text-[14px]">close</span>
-                    </button>
-                  )}
-
-                  {/* PDF Front-Page Preview Sheet or Icon */}
+                  {/* The Main Card: PDF Front-Page Preview */}
                   <div
-                    className={`relative rounded-xl overflow-hidden flex items-center justify-center transition-all ${
+                    className={`relative w-[210px] h-[280px] rounded-2xl overflow-hidden bg-white transition-all duration-300 ease-out ${
                       isActive
-                        ? 'w-[105px] h-[135px] mb-2.5 bg-white shadow-[0_6px_18px_rgba(0,0,0,0.3)] border border-white/25'
-                        : 'w-[75px] h-[98px] mb-2 bg-white shadow-sm border border-outline-variant/30'
+                        ? 'ring-4 ring-primary shadow-[0_12px_36px_rgba(0,89,187,0.3)] scale-100 z-10'
+                        : 'scale-[0.92] opacity-65 border border-outline-variant/30 shadow-sm hover:opacity-85'
                     }`}
                   >
+                    {/* Delete button */}
+                    {isActive && (
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
+                        className="absolute top-2.5 right-2.5 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
+                        title="Remove file"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">close</span>
+                      </button>
+                    )}
+
+                    {/* PDF Badge */}
+                    <div className="absolute top-2.5 left-2.5 bg-rose-600 text-white font-black text-[8px] px-1.5 py-0.5 rounded shadow-sm z-10 tracking-wider">
+                      PDF
+                    </div>
+
+                    {/* Preview Image or Fallback */}
                     {file.previewUrl ? (
-                      <>
-                        <img
-                          src={resolvePreviewUrl(file.previewUrl)}
-                          alt={file.name}
-                          className="w-full h-full object-cover object-top"
-                          loading="lazy"
-                        />
-                        <div className="absolute top-1 right-1 bg-red-600 text-white font-black text-[7px] px-1 py-0.5 rounded shadow-sm leading-none pointer-events-none">
-                          PDF
-                        </div>
-                      </>
+                      <img
+                        src={resolvePreviewUrl(file.previewUrl)}
+                        alt={file.name}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
                     ) : (
-                      <div className={`w-full h-full flex items-center justify-center ${isActive ? 'bg-primary/5' : 'bg-surface-container'}`}>
-                        <span
-                          className={`material-symbols-outlined ${isActive ? 'text-[44px] text-primary' : 'text-[32px] text-on-surface-variant'}`}
-                          style={{ fontVariationSettings: "'FILL' 1" }}
-                        >
+                      <div className="w-full h-full bg-surface-container-low flex flex-col items-center justify-center p-4">
+                        <span className="material-symbols-outlined text-[56px] text-primary/70" style={{ fontVariationSettings: "'FILL' 1" }}>
                           description
                         </span>
+                        <span className="text-xs font-bold text-on-surface-variant mt-2">PDF Document</span>
+                      </div>
+                    )}
+
+                    {/* Active "Editing" Pill */}
+                    {isActive && (
+                      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/65 backdrop-blur-md text-white rounded-full px-3 py-1 text-[10px] font-bold shadow-md z-10 pointer-events-none uppercase tracking-wider">
+                        <span className="material-symbols-outlined text-[12px] text-primary-fixed">edit</span>
+                        <span>Editing</span>
                       </div>
                     )}
                   </div>
 
-                  {/* File name */}
-                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[14px] text-white' : 'text-xs text-on-surface'}`}>
-                    {file.name}
-                  </span>
-
-                  {/* Meta info */}
-                  <span className={`text-center mt-0.5 ${isActive ? 'text-xs text-white/75' : 'text-[10px] text-on-surface-variant'}`}>
-                    {file.pages} pages · {file.size}
-                  </span>
-
-                  {/* Active file badge */}
-                  {isActive && (
-                    <div className="mt-2 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="material-symbols-outlined text-[12px]">edit</span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider">Editing</span>
-                    </div>
-                  )}
+                  {/* PDF Name and Size Details Shown Below */}
+                  <div className="mt-3 flex flex-col items-center w-[210px] text-center px-1">
+                    <span className={`font-bold truncate w-full ${isActive ? 'text-[14px] text-on-surface' : 'text-xs text-on-surface-variant'}`}>
+                      {file.name}
+                    </span>
+                    <span className={`mt-0.5 ${isActive ? 'text-xs text-on-surface-variant font-medium' : 'text-[10px] text-outline'}`}>
+                      {file.pages} pages · {file.size}
+                    </span>
+                  </div>
                 </div>
               );
             })}
 
             {/* Add More Card */}
-            <button
-              type="button"
-              onClick={triggerAddFileSelect}
-              disabled={isUploading}
+            <div
               data-file-index={selectedFiles.length}
-              className={`flex-shrink-0 snap-center snap-always carousel-card bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-2xl flex flex-col items-center justify-center w-[140px] h-[220px] transition-all duration-150 select-none ${isUploading ? 'opacity-50 cursor-not-allowed' : 'active:scale-95 opacity-80 hover:opacity-100'}`}
+              onClick={triggerAddFileSelect}
+              className="flex flex-col items-center flex-shrink-0 snap-center snap-always carousel-card cursor-pointer select-none"
             >
-              <div className="p-3 border-2 border-dashed border-outline-variant/40 rounded-full mb-3">
-                <span className={`material-symbols-outlined text-on-surface-variant text-[24px] ${isUploading ? 'animate-spin' : ''}`}>
-                  {isUploading ? 'refresh' : 'add'}
+              <button
+                type="button"
+                disabled={isUploading}
+                className={`w-[210px] h-[280px] rounded-2xl border-2 border-dashed border-outline-variant/40 flex flex-col items-center justify-center bg-surface-container-lowest transition-all duration-200 scale-[0.92] ${
+                  isUploading ? 'opacity-50 cursor-not-allowed' : 'active:scale-90 opacity-80 hover:opacity-100'
+                }`}
+              >
+                <div className="p-4 border-2 border-dashed border-outline-variant/40 rounded-full mb-3">
+                  <span className={`material-symbols-outlined text-on-surface-variant text-[28px] ${isUploading ? 'animate-spin' : ''}`}>
+                    {isUploading ? 'refresh' : 'add'}
+                  </span>
+                </div>
+                <span className="font-bold text-on-surface-variant text-sm">
+                  {isUploading ? 'Uploading...' : 'Add Files'}
                 </span>
+              </button>
+
+              <div className="mt-3 flex flex-col items-center w-[210px] text-center px-1">
+                <span className="font-semibold text-xs text-on-surface-variant">Add More</span>
+                <span className="text-[10px] text-outline mt-0.5">Upload another PDF</span>
               </div>
-              <span className="font-bold text-on-surface-variant text-xs">
-                {isUploading ? 'Uploading...' : 'Add Files'}
-              </span>
-            </button>
+            </div>
 
             {/* Right Spacer matching Left Spacer */}
-            <div className="w-[calc(50%-110px)] flex-shrink-0" />
+            <div className="w-[calc(50%-105px)] flex-shrink-0" />
           </div>
 
           {/* Dot indicators */}
