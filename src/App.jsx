@@ -152,9 +152,8 @@ export default function App() {
         printCode: data.qrData
       };
 
-      // We don't need to manually update state because the polling useEffect will pick it up
-      // setJobs(prev => [newJob, ...prev]);
-
+      // Clear selected files so next upload starts completely fresh
+      setSelectedFiles([]);
       setCurrentPage('print-code');
     } catch (err) {
       alert("Failed to create job: " + err.message);
@@ -335,10 +334,12 @@ export default function App() {
           <PrintCodeScreen 
             printCode={generatedCode}
             onClose={() => {
+              setSelectedFiles([]);
               setCurrentPage('main');
               setActiveTab('my-jobs');
             }}
             onNavigateTab={(tab) => {
+              setSelectedFiles([]);
               setCurrentPage('main');
               setActiveTab(tab);
             }}
