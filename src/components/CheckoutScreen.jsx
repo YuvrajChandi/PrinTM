@@ -195,7 +195,7 @@ export default function CheckoutScreen({
       <Header onNavigateTab={onNavigateTab} showBackButton={true} onBack={onBack} title="Checkout" />
 
       {/* Main Form Content */}
-      <main className="flex-1 overflow-y-auto pb-[142px] flex flex-col gap-5">
+      <main className="flex-1 overflow-y-auto pb-8 flex flex-col gap-5">
 
         {/* ─── Document Carousel ─── */}
         <section className="pt-4">
@@ -534,37 +534,40 @@ export default function CheckoutScreen({
             </div>
 
           </section>
+
+          {/* Inline Order Summary & Generate QR Section at bottom of page */}
+          <section className="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4 mt-1">
+            <div className="flex items-center justify-between select-none">
+              <div className="flex flex-col">
+                <span className="font-bold text-sm text-on-surface">Order Summary</span>
+                <span className="text-xs text-on-surface-variant mt-0.5">
+                  {selectedFiles.length} {selectedFiles.length === 1 ? 'document' : 'documents'} · {totalPages} {totalPages === 1 ? 'page' : 'pages'}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider block">Estimated Total</span>
+                <span className="font-extrabold text-xl text-primary">₹{totalEstimatedCost.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <button 
+              type="button"
+              onClick={onProceed}
+              disabled={isProcessing || selectedFiles.length === 0}
+              className="btn-primary w-full !h-12 shadow-md !rounded-2xl"
+            >
+              {isProcessing ? (
+                <span className="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+              ) : (
+                <span className="material-symbols-outlined text-[20px]">qr_code</span>
+              )}
+              {isProcessing ? 'Generating...' : 'Generate Print QR'}
+            </button>
+          </section>
+
         </div>
 
       </main>
-
-      {/* Floating Bottom action sheet */}
-      <div className="absolute bottom-0 w-full px-4 pt-3 pb-6 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-col gap-2.5 z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.03)]">
-
-        {/* Order Summary */}
-        <div className="flex items-center justify-between px-1 py-1 select-none">
-          <span className="font-semibold text-on-surface-variant text-sm">
-            Total ({selectedFiles.length} {selectedFiles.length === 1 ? 'doc' : 'docs'}, {totalPages} {totalPages === 1 ? 'page' : 'pages'})
-          </span>
-          <span className="font-bold text-base text-primary">₹{totalEstimatedCost.toFixed(2)}</span>
-        </div>
-
-        <div>
-          <button 
-            onClick={onProceed}
-            disabled={isProcessing || selectedFiles.length === 0}
-            className="btn-primary w-full !h-12 shadow-lg !rounded-full"
-          >
-            {isProcessing ? (
-              <span className="material-symbols-outlined text-[20px] animate-spin">refresh</span>
-            ) : (
-              <span className="material-symbols-outlined text-[20px]">qr_code</span>
-            )}
-            {isProcessing ? 'Generating...' : 'Generate Print QR'}
-          </button>
-        </div>
-
-      </div>
     </div>
   );
 }
