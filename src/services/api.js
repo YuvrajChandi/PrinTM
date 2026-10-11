@@ -84,6 +84,12 @@ export const Api = {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to upload PDF');
+
+    // If backend returns a relative preview path, prepend API_BASE
+    if (data.previewUrl && !data.previewUrl.startsWith('http')) {
+      data.previewUrl = `${API_BASE}${data.previewUrl}`;
+    }
+
     return data;
   },
 

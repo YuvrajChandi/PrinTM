@@ -2,6 +2,15 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import { MockApi } from '../services/mockApi';
 
+const resolvePreviewUrl = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  const apiBase = import.meta.env.VITE_API_BASE_URL || '';
+  return `${apiBase}${url}`;
+};
+
 export default function CheckoutScreen({
   selectedFiles,
   isProcessing,
@@ -180,10 +189,14 @@ export default function CheckoutScreen({
                     </button>
                   )}
 
-                  {/* PDF Icon or Preview Thumbnail */}
                   {file.previewUrl ? (
                     <div className={`w-full flex-shrink-0 overflow-hidden rounded-t-3xl bg-white ${isActive ? 'h-[230px]' : 'h-[175px]'}`}>
-                      <img src={file.previewUrl} alt={file.name} className="w-full h-full object-cover object-center" />
+                      <img 
+                        src={resolvePreviewUrl(file.previewUrl)} 
+                        alt={file.name} 
+                        className="w-full h-full object-cover object-center"
+                        loading="lazy"
+                      />
                     </div>
                   ) : (
                     <div className={`w-full flex-shrink-0 overflow-hidden rounded-t-3xl flex items-center justify-center ${isActive ? 'h-[230px] bg-white/10' : 'h-[175px] bg-primary/5'}`}>
