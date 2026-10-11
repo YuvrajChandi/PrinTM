@@ -55,8 +55,9 @@ Comprehensive specifications for developing the Raspberry Pi 5 backend, SQLite d
 - **Info Hub & Accordions**:
   - 4-step interactive bento guide explaining the kiosk printing workflow.
   - Smooth collapsible accordion system for Frequently Asked Questions.
-- **User Profile**:
-  - Durgesh Kumar user card with university email.
+- **Authentication & User Profile**:
+  - Flow 1 Email OTP account creation with Full Name registration.
+  - Dynamic user greeting and profile card with inline name editing and backend synchronization.
   - Fully working Dark Mode switch implementing system-wide toggle logic.
   - Simulated logout.
 - **Smartphone Frame Mockup**: Centered viewport wrapper for premium desktop demonstrations, converting to native full screen on mobile devices.
