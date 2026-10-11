@@ -104,8 +104,11 @@ export default function App() {
   // --- Action handlers ---
 
   const handleUploadFile = (newFile) => {
-    const file = createFile(newFile.name, newFile.pages, newFile.size, newFile.previewUrl, newFile.fileId);
-    setSelectedFiles(prev => [...prev, file]);
+    const list = Array.isArray(newFile) ? newFile : [newFile];
+    const createdFiles = list.map(f => 
+      createFile(f.name, f.pages, f.size, f.previewUrl, f.fileId)
+    );
+    setSelectedFiles(createdFiles);
     setCurrentPage('checkout');
   };
 
@@ -324,6 +327,7 @@ export default function App() {
             }}
             onProceed={handleConfirmCheckout}
             onNavigateTab={(tab) => {
+              setSelectedFiles([]);
               setCurrentPage('main');
               setActiveTab(tab);
             }}

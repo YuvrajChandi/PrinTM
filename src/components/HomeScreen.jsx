@@ -17,11 +17,12 @@ export default function HomeScreen({
     if (files && files.length > 0) {
       setIsUploading(true);
       try {
+        const uploadedList = [];
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           if (file.type === "application/pdf" || file.name.endsWith('.pdf')) {
             const data = await MockApi.uploadFile(file);
-            onUploadFile({
+            uploadedList.push({
               fileId: data.fileId,
               name: data.fileName,
               size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
@@ -31,6 +32,9 @@ export default function HomeScreen({
           } else {
             alert("Only PDF files are supported!");
           }
+        }
+        if (uploadedList.length > 0) {
+          onUploadFile(uploadedList);
         }
       } catch (err) {
         alert("Upload failed: " + err.message);
