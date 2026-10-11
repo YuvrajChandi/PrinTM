@@ -2,15 +2,6 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import { MockApi } from '../services/mockApi';
 
-const resolvePreviewUrl = (url) => {
-  if (!url) return null;
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
-    return url;
-  }
-  const apiBase = import.meta.env.VITE_API_BASE_URL || '';
-  return `${apiBase}${url}`;
-};
-
 export default function CheckoutScreen({
   selectedFiles,
   isProcessing,
@@ -267,9 +258,9 @@ export default function CheckoutScreen({
                   key={idx}
                   data-file-index={idx}
                   onClick={() => handleCardTap(idx)}
-                  className={`relative flex-shrink-0 snap-center snap-always carousel-card w-[220px] h-[280px] flex flex-col items-center justify-start rounded-3xl transition-transform duration-300 ease-out cursor-pointer select-none ${isActive
-                      ? 'scale-100 bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.3)] z-10'
-                      : 'scale-[0.92] bg-surface-container-lowest border border-outline-variant/30 text-on-surface opacity-60 hover:opacity-85'
+                  className={`relative flex-shrink-0 snap-center snap-always carousel-card flex flex-col items-center justify-center rounded-2xl transition-all duration-300 ease-out cursor-pointer select-none ${isActive
+                      ? 'w-[220px] h-[280px] bg-gradient-to-br from-primary to-[#00428c] text-white shadow-[0_8px_30px_rgba(0,89,187,0.3)] scale-100 z-10'
+                      : 'w-[160px] h-[220px] bg-surface-container-lowest border border-outline-variant/30 text-on-surface opacity-60 scale-95'
                     }`}
                 >
                   {/* Delete button */}
@@ -277,41 +268,37 @@ export default function CheckoutScreen({
                     <button
                       type="button"
                       onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
-                      className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center bg-error text-white rounded-full shadow-md active:scale-90 transition-all hover:bg-red-700 z-20"
+                      className="absolute top-2 right-2 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
                       title="Remove file"
                     >
-                      <span className="material-symbols-outlined text-[16px]">close</span>
+                      <span className="material-symbols-outlined text-[14px]">close</span>
                     </button>
                   )}
 
-                  {file.previewUrl ? (
-                    <div className="w-full h-[215px] flex-shrink-0 overflow-hidden rounded-t-3xl bg-white">
-                      <img 
-                        src={resolvePreviewUrl(file.previewUrl)} 
-                        alt={file.name} 
-                        className="w-full h-full object-cover object-center"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div className={`w-full h-[215px] flex-shrink-0 overflow-hidden rounded-t-3xl flex items-center justify-center ${isActive ? 'bg-white/10' : 'bg-primary/5'}`}>
-                      <span className={`material-symbols-outlined ${isActive ? 'text-[64px] text-white' : 'text-[48px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-                        description
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="h-[65px] flex-1 flex flex-col items-center justify-center w-full px-2">
-                    {/* File name */}
-                    <span className={`text-center font-bold truncate w-full ${isActive ? 'text-[13px] text-white' : 'text-[11px] text-on-surface'}`}>
-                      {file.name}
-                    </span>
-
-                    {/* Meta info */}
-                    <span className={`text-center mt-0.5 ${isActive ? 'text-[10px] text-white/70' : 'text-[9px] text-on-surface-variant'}`}>
-                      {file.pages} pages · {file.size}
+                  {/* PDF Icon */}
+                  <div className={`rounded-xl mb-3 flex items-center justify-center ${isActive ? 'bg-white/15 p-5' : 'bg-primary/5 p-4'}`}>
+                    <span className={`material-symbols-outlined ${isActive ? 'text-[52px] text-white' : 'text-[40px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                      description
                     </span>
                   </div>
+
+                  {/* File name */}
+                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[15px] text-white' : 'text-xs text-on-surface'}`}>
+                    {file.name}
+                  </span>
+
+                  {/* Meta info */}
+                  <span className={`text-center mt-1 ${isActive ? 'text-xs text-white/70' : 'text-[10px] text-on-surface-variant'}`}>
+                    {file.pages} pages · {file.size}
+                  </span>
+
+                  {/* Active file badge */}
+                  {isActive && (
+                    <div className="mt-3 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                      <span className="material-symbols-outlined text-[12px]">edit</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider">Editing</span>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -322,15 +309,15 @@ export default function CheckoutScreen({
               onClick={triggerAddFileSelect}
               disabled={isUploading}
               data-file-index={selectedFiles.length}
-              className={`flex-shrink-0 snap-center snap-always carousel-card bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-3xl flex flex-col items-center justify-center w-[220px] h-[280px] transition-transform duration-300 scale-[0.92] select-none ${isUploading ? 'opacity-50 cursor-not-allowed' : 'active:scale-95 opacity-80 hover:opacity-100 hover:scale-[0.95]'}`}
+              className={`flex-shrink-0 snap-center snap-always carousel-card bg-surface-container-lowest border-2 border-dashed border-outline-variant/40 rounded-2xl flex flex-col items-center justify-center w-[140px] h-[220px] transition-all duration-150 select-none ${isUploading ? 'opacity-50 cursor-not-allowed' : 'active:scale-95 opacity-80 hover:opacity-100'}`}
             >
               <div className="p-3 border-2 border-dashed border-outline-variant/40 rounded-full mb-3">
-                <span className={`material-symbols-outlined text-on-surface-variant text-[28px] ${isUploading ? 'animate-spin' : ''}`}>
+                <span className={`material-symbols-outlined text-on-surface-variant text-[24px] ${isUploading ? 'animate-spin' : ''}`}>
                   {isUploading ? 'refresh' : 'add'}
                 </span>
               </div>
               <span className="font-bold text-on-surface-variant text-xs">
-                {isUploading ? 'Uploading...' : 'Add More Files'}
+                {isUploading ? 'Uploading...' : 'Add Files'}
               </span>
             </button>
 
