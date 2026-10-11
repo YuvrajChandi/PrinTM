@@ -2,6 +2,15 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import { MockApi } from '../services/mockApi';
 
+const resolvePreviewUrl = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  const apiBase = import.meta.env.VITE_API_BASE_URL || '';
+  return `${apiBase}${url}`;
+};
+
 export default function CheckoutScreen({
   selectedFiles,
   isProcessing,
@@ -275,26 +284,51 @@ export default function CheckoutScreen({
                     </button>
                   )}
 
-                  {/* PDF Icon */}
-                  <div className={`rounded-xl mb-3 flex items-center justify-center ${isActive ? 'bg-white/15 p-5' : 'bg-primary/5 p-4'}`}>
-                    <span className={`material-symbols-outlined ${isActive ? 'text-[52px] text-white' : 'text-[40px] text-primary'}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-                      description
-                    </span>
+                  {/* PDF Front-Page Preview Sheet or Icon */}
+                  <div
+                    className={`relative rounded-xl overflow-hidden flex items-center justify-center transition-all ${
+                      isActive
+                        ? 'w-[105px] h-[135px] mb-2.5 bg-white shadow-[0_6px_18px_rgba(0,0,0,0.3)] border border-white/25'
+                        : 'w-[75px] h-[98px] mb-2 bg-white shadow-sm border border-outline-variant/30'
+                    }`}
+                  >
+                    {file.previewUrl ? (
+                      <>
+                        <img
+                          src={resolvePreviewUrl(file.previewUrl)}
+                          alt={file.name}
+                          className="w-full h-full object-cover object-top"
+                          loading="lazy"
+                        />
+                        <div className="absolute top-1 right-1 bg-red-600 text-white font-black text-[7px] px-1 py-0.5 rounded shadow-sm leading-none pointer-events-none">
+                          PDF
+                        </div>
+                      </>
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center ${isActive ? 'bg-primary/5' : 'bg-surface-container'}`}>
+                        <span
+                          className={`material-symbols-outlined ${isActive ? 'text-[44px] text-primary' : 'text-[32px] text-on-surface-variant'}`}
+                          style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                          description
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* File name */}
-                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[15px] text-white' : 'text-xs text-on-surface'}`}>
+                  <span className={`text-center font-bold truncate w-full px-3 ${isActive ? 'text-[14px] text-white' : 'text-xs text-on-surface'}`}>
                     {file.name}
                   </span>
 
                   {/* Meta info */}
-                  <span className={`text-center mt-1 ${isActive ? 'text-xs text-white/70' : 'text-[10px] text-on-surface-variant'}`}>
+                  <span className={`text-center mt-0.5 ${isActive ? 'text-xs text-white/75' : 'text-[10px] text-on-surface-variant'}`}>
                     {file.pages} pages · {file.size}
                   </span>
 
                   {/* Active file badge */}
                   {isActive && (
-                    <div className="mt-3 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                    <div className="mt-2 flex items-center gap-1.5 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
                       <span className="material-symbols-outlined text-[12px]">edit</span>
                       <span className="text-[10px] font-bold uppercase tracking-wider">Editing</span>
                     </div>
