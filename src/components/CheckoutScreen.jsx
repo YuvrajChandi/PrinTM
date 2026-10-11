@@ -256,7 +256,7 @@ export default function CheckoutScreen({
             onScroll={handleScroll}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="flex overflow-x-auto no-scrollbar gap-5 py-3 snap-x snap-mandatory carousel-track"
+            className="flex overflow-x-auto no-scrollbar gap-5 py-4 snap-x snap-mandatory carousel-track"
           >
             {/* Left Spacer to center the first card */}
             <div className="w-[calc(50%-105px)] flex-shrink-0" />
@@ -270,53 +270,47 @@ export default function CheckoutScreen({
                   className="flex flex-col items-center flex-shrink-0 snap-center snap-always carousel-card cursor-pointer select-none"
                 >
                   {/* The Main Card: PDF Front-Page Preview */}
-                  <div
-                    className={`relative w-[210px] h-[280px] rounded-2xl overflow-hidden bg-white transition-all duration-300 ease-out ${
-                      isActive
-                        ? 'ring-4 ring-primary shadow-[0_12px_36px_rgba(0,89,187,0.3)] scale-100 z-10'
-                        : 'scale-[0.92] opacity-65 border border-outline-variant/30 shadow-sm hover:opacity-85'
-                    }`}
-                  >
-                    {/* Delete button */}
+                  <div className="relative">
+                    <div
+                      className={`w-[210px] h-[280px] rounded-2xl overflow-hidden bg-white transition-all duration-300 ease-out ${
+                        isActive
+                          ? 'shadow-[0_16px_40px_rgba(0,0,0,0.18)] scale-100 border border-slate-200'
+                          : 'scale-[0.92] opacity-60 border border-outline-variant/30 shadow-sm hover:opacity-80'
+                      }`}
+                    >
+                      {/* PDF Badge */}
+                      <div className="absolute top-2.5 left-2.5 bg-rose-600 text-white font-black text-[8px] px-1.5 py-0.5 rounded shadow-sm z-10 tracking-wider">
+                        PDF
+                      </div>
+
+                      {/* Preview Image or Fallback */}
+                      {file.previewUrl ? (
+                        <img
+                          src={resolvePreviewUrl(file.previewUrl)}
+                          alt={file.name}
+                          className="w-full h-full object-cover object-top"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-surface-container-low flex flex-col items-center justify-center p-4">
+                          <span className="material-symbols-outlined text-[56px] text-primary/70" style={{ fontVariationSettings: "'FILL' 1" }}>
+                            description
+                          </span>
+                          <span className="text-xs font-bold text-on-surface-variant mt-2">PDF Document</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Delete button: Perfect circle placed half in and half out at the top right corner */}
                     {isActive && (
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); onDeleteFile(idx); }}
-                        className="absolute top-2.5 right-2.5 bg-error text-white rounded-full p-1.5 shadow-md active:scale-90 transition-transform hover:bg-red-700 z-20"
+                        className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg active:scale-90 hover:bg-red-700 transition-all z-30 cursor-pointer border-2 border-white shrink-0 aspect-square"
                         title="Remove file"
                       >
-                        <span className="material-symbols-outlined text-[14px]">close</span>
+                        <span className="material-symbols-outlined text-[16px] leading-none select-none">close</span>
                       </button>
-                    )}
-
-                    {/* PDF Badge */}
-                    <div className="absolute top-2.5 left-2.5 bg-rose-600 text-white font-black text-[8px] px-1.5 py-0.5 rounded shadow-sm z-10 tracking-wider">
-                      PDF
-                    </div>
-
-                    {/* Preview Image or Fallback */}
-                    {file.previewUrl ? (
-                      <img
-                        src={resolvePreviewUrl(file.previewUrl)}
-                        alt={file.name}
-                        className="w-full h-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-surface-container-low flex flex-col items-center justify-center p-4">
-                        <span className="material-symbols-outlined text-[56px] text-primary/70" style={{ fontVariationSettings: "'FILL' 1" }}>
-                          description
-                        </span>
-                        <span className="text-xs font-bold text-on-surface-variant mt-2">PDF Document</span>
-                      </div>
-                    )}
-
-                    {/* Active "Editing" Pill */}
-                    {isActive && (
-                      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/65 backdrop-blur-md text-white rounded-full px-3 py-1 text-[10px] font-bold shadow-md z-10 pointer-events-none uppercase tracking-wider">
-                        <span className="material-symbols-outlined text-[12px] text-primary-fixed">edit</span>
-                        <span>Editing</span>
-                      </div>
                     )}
                   </div>
 
