@@ -49,9 +49,7 @@ export default function LoginScreen({ onLoginSuccess }) {
       setIsNewUser(Boolean(res.isNewUser));
       setStep('otp');
       setResendCooldown(45);
-      if (res && res.otp) {
-        setOtp(res.otp);
-      }
+      setOtp('');
     } catch (err) {
       setError(err.message || 'Failed to send OTP');
     } finally {
